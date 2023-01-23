@@ -5,8 +5,8 @@ void PolarGrid::makeExample() {
   setDistanceMax(1000.);
   setDistanceStep(10);
   setRotation(-90);
-  setBearingMin(0);
-  setBearingMax(180);
+  setBearingMin(30);
+  setBearingMax(150);
   setBearingStep(10);
   setPixelWidth(2048);
   setPixelHeight(2048);
@@ -36,7 +36,7 @@ void PolarGrid::updateBearingNodes() {
 
   auto phi{_bearingMin};
   _bearingNodes.reserve(std::size_t(_bearingMax / _bearingStep));
-  while (phi <= _bearingMax - _bearingStep) {
+  while (phi < _bearingMax) {
     _bearingNodes.push_back(phi);
     phi += _bearingStep;
   }
