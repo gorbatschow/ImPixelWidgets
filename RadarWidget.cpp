@@ -24,9 +24,9 @@ void RadarWidget::paint() {
 
   if (ImPlot::BeginPlot("Plot", {-1, -1}, flags_plt)) {
     ImPlot::PlotImage("Pixels", _pixels.imID(), _boundsMin, _boundsMax);
-    /*
+
     ImPlot::PlotScatter("Nodes", _grid.xNodes().data(), _grid.yNodes().data(),
-                        _grid.xNodes().size()); */
+                        _grid.xNodes().size());
 
     ImPlot::EndPlot();
   }
