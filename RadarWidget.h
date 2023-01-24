@@ -11,10 +11,10 @@ public:
   RadarWidget();
 
   // Destructor
-  ~RadarWidget() = default;
+  virtual ~RadarWidget() = default;
 
   // Paint
-  void paint();
+  virtual void paint();
 
   // Set Grid
   void setGrid(const PolarGrid &grid);
@@ -45,6 +45,9 @@ public:
     }
     _pixels.loadTexture();
   }
+
+  // Get Pixel Data
+  const PixelData &pixelData() const { return _pixels; }
 
   // Display Scatter
   inline void setDisplayScatter(bool display) { _displayScatter = display; }
