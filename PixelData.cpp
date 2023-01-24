@@ -1,4 +1,5 @@
 #include "PixelData.h"
+#include <fstream>
 
 PixelData::PixelData() {
   resize(4, 4);
@@ -52,4 +53,14 @@ void PixelData::fill(const std::vector<std::size_t> &indexes,
     _blob[i + 2] = rgba[2];
     _blob[i + 3] = rgba[3];
   }
+}
+
+bool PixelData::savePixelData(const std::string &fname) const {
+
+  std::ofstream stream(fname.c_str(), std::fstream::out | std::fstream::binary);
+  if (stream) {
+    stream.write(reinterpret_cast<const char *>(_blob.data()), _blob.size());
+    return (stream.good());
+  }
+  return false;
 }

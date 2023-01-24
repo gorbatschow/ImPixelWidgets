@@ -3,6 +3,7 @@
 #include <GL/gl.h>
 #include <array>
 #include <imgui.h>
+#include <string>
 #include <vector>
 
 class PixelData {
@@ -29,8 +30,12 @@ public:
   void fill(const std::vector<std::size_t> &indexes,
             const ColorRGBA &rgba = ColorRGBA_Lime);
 
+  // ID
   inline GLuint glID() const { return _id; }
   inline ImTextureID imID() const { return (ImTextureID)(intptr_t)glID(); }
+
+  // Save Blob
+  bool savePixelData(const std::string &fname) const;
 
 private:
   std::size_t _width{};
