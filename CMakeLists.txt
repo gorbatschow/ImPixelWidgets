@@ -9,6 +9,7 @@ set(IMPIXELWIDGETS_SOURCES
     RadarWidget.cpp
     PolarGrid.cpp
     PixelData.cpp
+    ColorSchemeTurbo.cpp
 )
 
 add_library(${PROJECT_NAME} ${IMPIXELWIDGETS_SOURCES})

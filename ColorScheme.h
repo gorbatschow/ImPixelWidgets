@@ -10,22 +10,28 @@ struct ColorScheme {
 
   inline ColorRGBA valueToColor(double value, double alpha = 1.0) const {
     value = std::clamp(value, valueMin, valueMax);
-    value = value / valueMax;
-    return {uint8_t(red(value) * ColorRGBA_Max),
-            uint8_t(green(value) * ColorRGBA_Max),
-            uint8_t(blue(value) * ColorRGBA_Max),
+    value = value / valueMax * ColorRGBA_Max;
+    return {red(uint8_t(value)), green(uint8_t(value)), blue(uint8_t(value)),
             uint8_t(alpha * ColorRGBA_Max)};
   }
 
-  virtual double red(const double &value) const = 0;
-  virtual double green(const double &value) const = 0;
-  virtual double blue(const double &value) const = 0;
+  virtual uint8_t red(uint8_t value) const = 0;
+  virtual uint8_t green(uint8_t value) const = 0;
+  virtual uint8_t blue(uint8_t value) const = 0;
 };
 
 // Monochromatic
 // -----------------------------------------------------------------------------
 struct ColorSchemeMono : public ColorScheme {
-  virtual double red(const double &value) const { return value; }
-  virtual double green(const double &value) const { return value; }
-  virtual double blue(const double &value) const { return value; }
+  virtual uint8_t red(uint8_t value) const override { return value; }
+  virtual uint8_t green(uint8_t value) const override { return value; }
+  virtual uint8_t blue(uint8_t value) const override { return value; }
+};
+
+// Turbo
+// -----------------------------------------------------------------------------
+struct ColorSchemeTurbo : public ColorScheme {
+  virtual uint8_t red(uint8_t value) const override;
+  virtual uint8_t green(uint8_t value) const override;
+  virtual uint8_t blue(uint8_t value) const override;
 };
