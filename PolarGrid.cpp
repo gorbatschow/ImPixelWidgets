@@ -1,15 +1,15 @@
 #include "PolarGrid.h"
 
-void PolarGrid::makeExample() {
-  setDistanceMin(100.);
-  setDistanceMax(1000.);
-  setDistanceStep(10);
-  setRotation(-90);
-  setBearingMin(30);
-  setBearingMax(150);
-  setBearingStep(10);
-  setPixelWidth(2048);
-  setPixelHeight(2048);
+PolarGrid::PolarGrid() {
+  setDistanceMin(0.);
+  setDistanceMax(999.);
+  setDistanceStep(10.);
+  setRotation(-90.);
+  setBearingMin(0.);
+  setBearingMax(180.);
+  setBearingStep(5.);
+  setPixelWidth(1024);
+  setPixelHeight(1024);
   updateGrid();
 }
 
@@ -23,9 +23,9 @@ void PolarGrid::updateGrid() {
 void PolarGrid::updateDistanceNodes() {
   assert(_distanceMax > _distanceMin);
 
-  auto r{_distanceMin};
   _distanceNodes.reserve(std::size_t(_distanceMax / _distanceStep));
-  while (r < _distanceMax) {
+  auto r{_distanceMin};
+  while (r <= _distanceMax) {
     _distanceNodes.push_back(r);
     r += _distanceStep;
   }
@@ -34,9 +34,9 @@ void PolarGrid::updateDistanceNodes() {
 void PolarGrid::updateBearingNodes() {
   assert(_bearingMax > _bearingMin);
 
-  auto phi{_bearingMin};
   _bearingNodes.reserve(std::size_t(_bearingMax / _bearingStep));
-  while (phi < _bearingMax) {
+  auto phi{_bearingMin};
+  while (phi <= _bearingMax) {
     _bearingNodes.push_back(phi);
     phi += _bearingStep;
   }
@@ -71,7 +71,7 @@ void PolarGrid::bindNodesToPixels() {
   for (std::size_t i{}, k{}; i != _pixelHeight; ++i) {
     for (std::size_t j{}; j != _pixelWidth; ++j, ++k) {
       cartToPolar(y, x, r, phi);
-      polarToNode(r - _distanceMin, phi - _bearingMin, node_r, node_phi);
+      polarToNode(r, phi, node_r, node_phi);
       x += dx;
       if (_pixelMap.size() <= node_r) {
         continue;

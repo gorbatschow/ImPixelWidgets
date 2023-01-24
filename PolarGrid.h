@@ -5,7 +5,7 @@
 
 class PolarGrid {
 public:
-  PolarGrid() = default;
+  PolarGrid();
   ~PolarGrid() = default;
 
   void makeExample();
@@ -73,13 +73,19 @@ public:
 
   inline const std::vector<std::size_t> &nodeToPixel(std::size_t node_r,
                                                      std::size_t node_phi) {
+    if (_distanceNodes.size() <= node_r) {
+      return _empty;
+    }
+    if (_bearingNodes.size() <= node_phi) {
+      return _empty;
+    }
     return _pixelMap.at(node_r).at(node_phi);
   }
 
   inline const std::vector<std::size_t> &nodeToPixel(std::size_t node_index) {
     const std::size_t node_r{node_index / _bearingNodes.size()};
     const std::size_t node_phi{node_index % _bearingNodes.size()};
-    return _pixelMap.at(node_r).at(node_phi);
+    return nodeToPixel(node_r, node_phi);
   }
 
   inline const std::vector<std::size_t> &polarToPixel(double r, double phi) {
@@ -116,8 +122,8 @@ public:
 
   inline void polarToNode(double r, double phi, std::size_t &node_r,
                           std::size_t &node_phi) const {
-    node_r = std::floor(r / _distanceStep);
-    node_phi = std::floor(phi / _bearingStep);
+    node_r = std::floor((r - _distanceMin) / _distanceStep);
+    node_phi = std::floor((phi - _bearingMin) / _bearingStep);
   }
 
 private:
@@ -146,4 +152,5 @@ private:
 
   // Map nodes to pixels
   std::vector<std::vector<std::vector<std::size_t>>> _pixelMap;
+  std::vector<std::size_t> _empty;
 };
