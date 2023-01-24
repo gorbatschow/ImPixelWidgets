@@ -8,8 +8,11 @@ public:
   PolarGrid();
   ~PolarGrid() = default;
 
-  void makeExample();
   void updateGrid();
+  void updateDistanceNodes();
+  void updateBearingNodes();
+  void updateCartesianNodes();
+  void bindNodesToPixels();
 
   // Distance
   // ---------------------------------------------------------------------------
@@ -26,8 +29,6 @@ public:
     return _distanceNodes;
   }
 
-  void updateDistanceNodes();
-
   // Bearing
   // ---------------------------------------------------------------------------
   inline void setBearingMin(double min) { _bearingMin = min; }
@@ -38,8 +39,6 @@ public:
 
   inline void setBearingStep(double step) { _bearingStep = step; }
   inline double bearingStep() const { return _bearingStep; }
-
-  void updateBearingNodes();
 
   inline const std::vector<double> &bearingNodes() const {
     return _bearingNodes;
@@ -56,8 +55,6 @@ public:
 
   // Cartesian
   // ---------------------------------------------------------------------------
-  void updateCartesianNodes();
-
   inline const std::vector<double> &xNodes() const { return _xNodes; }
   inline const std::vector<double> &yNodes() const { return _yNodes; }
 
@@ -93,8 +90,6 @@ public:
     polarToNode(r, phi, node_r, node_phi);
     return nodeToPixel(node_r, node_phi);
   }
-
-  void bindNodesToPixels();
 
   // Helpers
   // ---------------------------------------------------------------------------
