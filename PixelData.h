@@ -34,6 +34,9 @@ public:
   inline GLuint glID() const { return _id; }
   inline ImTextureID imID() const { return (ImTextureID)(intptr_t)glID(); }
 
+  // Get Blob
+  const std::vector<uint8_t> &pixelData() const { return _blob; }
+
   // Save Blob
   bool savePixelData(const std::string &fname) const;
 
