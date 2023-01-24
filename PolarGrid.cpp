@@ -21,7 +21,7 @@ void PolarGrid::updateGrid() {
 }
 
 void PolarGrid::updateDistanceNodes() {
-  assert(_distanceMax > _distanceMin);
+  // assert(_distanceMax > _distanceMin);
 
   _distanceNodes.clear();
   _distanceNodes.reserve(std::size_t(_distanceMax / _distanceStep));
@@ -33,7 +33,7 @@ void PolarGrid::updateDistanceNodes() {
 }
 
 void PolarGrid::updateBearingNodes() {
-  assert(_bearingMax > _bearingMin);
+  // assert(_bearingMax > _bearingMin);
 
   _bearingNodes.clear();
   _bearingNodes.reserve(std::size_t(_bearingMax / _bearingStep));
