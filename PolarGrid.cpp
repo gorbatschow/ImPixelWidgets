@@ -26,7 +26,7 @@ void PolarGrid::updateDistanceNodes() {
   _distanceNodes.clear();
   _distanceNodes.reserve(std::size_t(_distanceMax / _distanceStep));
   auto r{_distanceMin};
-  while (r < _distanceMax) {
+  while (r <= _distanceMax) {
     _distanceNodes.push_back(r);
     r += _distanceStep;
   }
@@ -38,7 +38,7 @@ void PolarGrid::updateBearingNodes() {
   _bearingNodes.clear();
   _bearingNodes.reserve(std::size_t(_bearingMax / _bearingStep));
   auto phi{_bearingMin};
-  while (phi < _bearingMax) {
+  while (phi <= _bearingMax) {
     _bearingNodes.push_back(phi);
     phi += _bearingStep;
   }
