@@ -106,13 +106,13 @@ public:
   }
 
   inline void polarToCart(double r, double phi, double &x, double &y) const {
-    x = r * cosd(90. - phi - _rotation);
-    y = r * sind(90. - phi - _rotation);
+    x = r * cosd(90. - phi - _rotation + _baseRotation);
+    y = r * sind(90. - phi - _rotation + _baseRotation);
   }
 
   inline void cartToPolar(double y, double x, double &r, double &phi) const {
     r = sqrt(x * x + y * y);
-    phi = fmod(90. - atan2d(y, x) + 360. - _rotation, 360.);
+    phi = fmod(90. - atan2d(y, x) + 360. - _rotation + _baseRotation, 360.);
   }
 
   inline void polarToNode(double r, double phi, std::size_t &node_r,
@@ -136,6 +136,7 @@ private:
 
   // Rotation
   double _rotation{};
+  double _baseRotation{90.f};
 
   // Cartesian
   std::vector<double> _xNodes;
