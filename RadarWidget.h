@@ -1,3 +1,5 @@
+// clang-format off
+
 #pragma once
 #include "ColorScheme.h"
 #include "PixelData.h"
@@ -53,7 +55,7 @@ public:
   inline void setDisplayScatter(bool display) { _displayScatter = display; }
   inline bool displayScatter() const { return _displayScatter; }
 
-private:
+protected:
   ImVec2 _boundsMin;
   ImVec2 _boundsMax;
   PixelData _pixels;

@@ -1,3 +1,5 @@
+// clang-format off
+
 #pragma once
 #include <cassert>
 #include <cmath>
@@ -6,7 +8,8 @@
 class PolarGrid {
 public:
   PolarGrid();
-  ~PolarGrid() = default;
+  PolarGrid(const PolarGrid &);
+  virtual ~PolarGrid() = default;
 
   void updateGrid();
   void updateDistanceNodes();
@@ -121,7 +124,7 @@ public:
     node_phi = std::floor((phi - _bearingMin) / _bearingStep);
   }
 
-private:
+protected:
   // Distance
   double _distanceMin{};
   double _distanceMax{};

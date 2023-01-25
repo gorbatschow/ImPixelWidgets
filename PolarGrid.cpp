@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "PolarGrid.h"
 
 PolarGrid::PolarGrid() {
@@ -11,6 +13,18 @@ PolarGrid::PolarGrid() {
   setPixelWidth(32);
   setPixelHeight(32);
   updateGrid();
+}
+
+PolarGrid::PolarGrid(const PolarGrid& rhs) {
+  this->setDistanceMin(rhs._distanceMin);
+  this->setDistanceMax(rhs._distanceMax);
+  this->setDistanceStep(rhs._distanceStep);
+  this->setRotation(rhs._rotation);
+  this->setBearingMin(rhs._bearingMin);
+  this->setBearingMax(rhs._bearingMax);
+  this->setBearingStep(rhs._bearingStep);
+  this->setPixelWidth(rhs._pixelWidth);
+  this->setPixelHeight(rhs._pixelHeight);
 }
 
 void PolarGrid::updateGrid() {
