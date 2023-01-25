@@ -77,10 +77,10 @@ void PolarGrid::bindNodesToPixels() {
       cartToPolar(y, x, r, phi);
       polarToNode(r, phi, node_r, node_phi);
       x += dx;
-      if (_pixelMap.size() <= node_r) {
+      if (_pixelMap.size() <= node_r || r > _distanceMax) {
         continue;
       }
-      if (_pixelMap[node_r].size() <= node_phi) {
+      if (_pixelMap[node_r].size() <= node_phi || phi > _bearingMax) {
         continue;
       }
       _pixelMap[node_r][node_phi].push_back(k);
