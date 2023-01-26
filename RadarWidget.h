@@ -51,7 +51,7 @@ public:
   inline void setCartesianData(const T *y, const T *x, const T *val,
                                std::size_t size) {
     for (std::size_t i{}; i != size; ++i) {
-      _pixelData.fill(_pixelGrid->cartToPixel(y[i], x[i]),
+      _pixelData.fill(_pixelGrid->cartesianToPixel(y[i], x[i]),
                       _colorScheme->valueToColor(val[i]));
     }
     _pixelData.loadTexture();
@@ -71,4 +71,5 @@ private:
   std::shared_ptr<IPixelGrid> _pixelGrid{};
   std::unique_ptr<ColorScheme> _colorScheme{new ColorSchemeMono};
   bool _displayScatter{false};
+  std::vector<double> _xGridNodes, _yGridNodes;
 };

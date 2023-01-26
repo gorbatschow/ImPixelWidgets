@@ -13,8 +13,8 @@ void RadarWidget::paint() {
     }
 
     if (_displayScatter) {
-      ImPlot::PlotScatter("Nodes", _pixelGrid->xNodes2D(),
-                          _pixelGrid->yNodes2D(), _pixelGrid->nodeSize());
+      ImPlot::PlotScatter("Nodes", _xGridNodes.data(), _yGridNodes.data(),
+                          _xGridNodes.size());
     }
 
     ImPlot::EndPlot();
@@ -27,6 +27,7 @@ void RadarWidget::setPixelGrid(std::shared_ptr<IPixelGrid> grid) {
   _pixelData.fill(ColorRGBA_Aqua);
   _pixelData.loadTexture();
 
-  _boundsMin = _pixelGrid->boundsMin();
-  _boundsMax = _pixelGrid->boundsMax();
+  _boundsMin = _pixelGrid->cartesianBoundsMin();
+  _boundsMax = _pixelGrid->cartesianBoundsMax();
+  _pixelGrid->makeCartesianMesh(_xGridNodes, _yGridNodes);
 }

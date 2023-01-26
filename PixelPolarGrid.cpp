@@ -1,20 +1,35 @@
 #include "PixelPolarGrid.h"
 
 PixelPolarGrid::PixelPolarGrid(const PolarGridConfig &config)
-    : _config(config) {
-  updateGrid();
+    : _config(config) {}
+
+void PixelPolarGrid::makeCartesianMesh(std::vector<double> &x,
+                                       std::vector<double> &y) const {
+  x.resize(gridSize());
+  y.resize(gridSize());
+  for (std::size_t i{}, k{}; i != _distanceNodes.size(); ++i) {
+    for (std::size_t j{}; j != _bearingNodes.size(); ++j, ++k) {
+      polarToCartesian(_distanceNodes[i], _bearingNodes[j], x[k], y[k]);
+    }
+  }
 }
 
-void PixelPolarGrid::updateGrid() {
-  updateDistanceNodes();
-  updateBearingNodes();
-  updateCartesianNodes();
-  bindNodesToPixels();
+void PixelPolarGrid::makePolarMesh(std::vector<double> &r,
+                                   std::vector<double> &phi) const {
+
+  r.resize(gridSize());
+  phi.resize(gridSize());
+  std::size_t k{};
+  for (const auto &r_k : _distanceNodes) {
+    for (const auto &phi_k : _bearingNodes) {
+      r[k] = r_k;
+      phi[k] = phi_k;
+      ++k;
+    }
+  }
 }
 
 void PixelPolarGrid::updateDistanceNodes() {
-  // assert(_distanceMax > _distanceMin);
-
   _distanceNodes.clear();
   _distanceNodes.reserve(
       std::size_t(_config.distanceMax() / _config.distanceStep()));
@@ -26,8 +41,6 @@ void PixelPolarGrid::updateDistanceNodes() {
 }
 
 void PixelPolarGrid::updateBearingNodes() {
-  // assert(_bearingMax > _bearingMin);
-
   _bearingNodes.clear();
   _bearingNodes.reserve(
       std::size_t(_config.bearingMax() / _config.bearingStep()));
@@ -35,18 +48,6 @@ void PixelPolarGrid::updateBearingNodes() {
   while (phi <= _config.bearingMax()) {
     _bearingNodes.push_back(phi);
     phi += _config.bearingStep();
-  }
-}
-
-void PixelPolarGrid::updateCartesianNodes() {
-  _xNodes.clear();
-  _yNodes.clear();
-  _xNodes.resize(_distanceNodes.size() * _bearingNodes.size());
-  _yNodes.resize(_distanceNodes.size() * _bearingNodes.size());
-  for (std::size_t i{}, k{}; i != _distanceNodes.size(); ++i) {
-    for (std::size_t j{}; j != _bearingNodes.size(); ++j, ++k) {
-      polarToCart(_distanceNodes[i], _bearingNodes[j], _xNodes[k], _yNodes[k]);
-    }
   }
 }
 
@@ -70,7 +71,7 @@ void PixelPolarGrid::bindNodesToPixels() {
 
   for (std::size_t i{}, k{}; i != IPixelGrid::pixelHeight(); ++i) {
     for (std::size_t j{}; j != IPixelGrid::pixelWidth(); ++j, ++k) {
-      cartToPolar(y, x, r, phi);
+      cartesianToPolar(y, x, r, phi);
       polarToNode(r, phi, node_r, node_phi);
       x += dx;
       if (_pixelMap.size() <= node_r || r > _config.distanceMax()) {

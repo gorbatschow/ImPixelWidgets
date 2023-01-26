@@ -12,13 +12,7 @@ public:
 
   // Interface
   // ---------------------------------------------------------------------------
-  inline const double *xNodes2D() const override { return _xNodes.data(); }
-  inline const double *yNodes2D() const override { return _yNodes.data(); }
-
-  inline std::size_t nodeSize() const override {
-    return _distanceNodes.size() * _bearingNodes.size();
-  }
-
+  // Polar To Pixel
   virtual const std::vector<std::size_t> &polarToPixel(double r,
                                                        double phi) override {
     std::size_t node_r{}, node_phi{};
@@ -26,26 +20,44 @@ public:
     return nodeToPixel(node_r, node_phi);
   }
 
-  virtual const std::vector<std::size_t> &cartToPixel(double y,
-                                                      double x) override {
+  // Cartesian To Pixel
+  virtual const std::vector<std::size_t> &cartesianToPixel(double y,
+                                                           double x) override {
     double r{}, phi{};
-    cartToPolar(y, x, r, phi);
+    cartesianToPolar(y, x, r, phi);
     return polarToPixel(r, phi);
   }
 
-  virtual ImVec2 boundsMin() const override {
+  // Cartesian Bounds Min
+  virtual ImVec2 cartesianBoundsMin() const override {
     return {-float(_config.distanceMax()), -float(_config.distanceMax())};
   }
 
-  virtual ImVec2 boundsMax() const override {
+  // Cartesian Bounds Max
+  virtual ImVec2 cartesianBoundsMax() const override {
     return {+float(_config.distanceMax()), +float(_config.distanceMax())};
+  }
+
+  // Make Cartesian Mesh
+  virtual void makeCartesianMesh(std::vector<double> &x,
+                                 std::vector<double> &y) const override;
+
+  // Make Polar Mesh
+  virtual void makePolarMesh(std::vector<double> &r,
+                             std::vector<double> &phi) const override;
+
+  // Grid Size
+  virtual std::size_t gridSize() const override {
+    return _distanceNodes.size() * _bearingNodes.size();
   }
 
   // Config
   // ---------------------------------------------------------------------------
   inline void setConfig(const PolarGridConfig &config) {
     _config = config;
-    updateGrid();
+    updateDistanceNodes();
+    updateBearingNodes();
+    bindNodesToPixels();
   }
   inline const PolarGridConfig &config() const { return _config; }
 
@@ -92,12 +104,14 @@ public:
     return atan2(y, x) * 180. / M_PI;
   }
 
-  inline void polarToCart(double r, double phi, double &x, double &y) const {
+  inline void polarToCartesian(double r, double phi, double &x,
+                               double &y) const {
     x = r * cosd(90. - phi - rotation() + _baseRotation);
     y = r * sind(90. - phi - rotation() + _baseRotation);
   }
 
-  inline void cartToPolar(double y, double x, double &r, double &phi) const {
+  inline void cartesianToPolar(double y, double x, double &r,
+                               double &phi) const {
     r = sqrt(x * x + y * y);
     phi = fmod(90. - atan2d(y, x) + 360. - rotation() + _baseRotation, 360.);
   }
@@ -109,10 +123,8 @@ public:
   }
 
 private:
-  void updateGrid();
   void updateDistanceNodes();
   void updateBearingNodes();
-  void updateCartesianNodes();
   void bindNodesToPixels();
 
   // Config
@@ -122,13 +134,9 @@ private:
   std::vector<double> _distanceNodes{};
   std::vector<double> _bearingNodes{};
 
-  // Cartesian
-  std::vector<double> _xNodes;
-  std::vector<double> _yNodes;
-
   // Map nodes to pixels
   std::vector<std::vector<std::vector<std::size_t>>> _pixelMap;
 
-  //
+  // Base Rotation
   const double _baseRotation{90.f};
 };

@@ -7,17 +7,32 @@ class IPixelGrid {
 public:
   virtual ~IPixelGrid() = default;
 
-  virtual const std::vector<std::size_t> &polarToPixel(double r,
-                                                       double phi) = 0;
+  // Polar To Pixel
+  virtual const std::vector<std::size_t> &polarToPixel(double r, double phi) {
+    return _emptyPixel;
+  };
 
-  virtual const std::vector<std::size_t> &cartToPixel(double x, double y) = 0;
+  // Cartesian To Pixel
+  virtual const std::vector<std::size_t> &cartesianToPixel(double x, double y) {
+    return _emptyPixel;
+  };
 
-  virtual const double *xNodes2D() const = 0;
-  virtual const double *yNodes2D() const = 0;
-  virtual std::size_t nodeSize() const = 0;
+  // Cartesian Bounds Min
+  virtual ImVec2 cartesianBoundsMin() const { return {0, 0}; };
 
-  virtual ImVec2 boundsMin() const = 0;
-  virtual ImVec2 boundsMax() const = 0;
+  // Cartesian Bounds Max
+  virtual ImVec2 cartesianBoundsMax() const { return {0, 0}; };
+
+  // Make Cartesian Mesh
+  virtual void makeCartesianMesh(std::vector<double> &x,
+                                 std::vector<double> &y) const {}
+
+  // Make Polar Mesh
+  virtual void makePolarMesh(std::vector<double> &r,
+                             std::vector<double> &phi) const {}
+
+  // Grid Size
+  virtual std::size_t gridSize() const { return 0; }
 
   // Pixel Size
   // ---------------------------------------------------------------------------
