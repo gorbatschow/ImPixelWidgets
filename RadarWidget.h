@@ -1,7 +1,7 @@
 #pragma once
 #include "ColorScheme.h"
+#include "IPixelGrid.h"
 #include "PixelData.h"
-#include "PolarGrid.h"
 #include <implot.h>
 #include <memory>
 
@@ -16,11 +16,11 @@ public:
   // Paint
   virtual void paint();
 
-  // Set Grid
-  void setGrid(const PolarGrid &grid);
+  // Set Pixel Grid
+  void setPixelGrid(std::shared_ptr<IPixelGrid> grid);
 
   // Get Grid
-  const PolarGrid &grid() const { return _grid; }
+  const IPixelGrid &grid() const { return (*_pixelGrid); }
 
   // Set Color Scheme
   template <typename T> void setColorScheme(double min, double max) {
@@ -33,21 +33,32 @@ public:
   const ColorScheme &colorScheme() const { return (*_colorScheme); }
 
   // Clear Data
-  inline void clearData() { _pixels.fill(ColorRGBA_Transparent); }
+  inline void clearData() { _pixelData.fill(ColorRGBA_Transparent); }
 
-  // Set Data
+  // Set Polar Data
   template <typename T>
-  inline void setData(const std::vector<T> &r, const std::vector<T> &phi,
-                      const std::vector<T> &val) {
-    for (std::size_t i{}; i != r.size(); ++i) {
-      _pixels.fill(_grid.polarToPixel(r[i], phi[i]),
-                   _colorScheme->valueToColor(val[i]));
+  inline void setPolarData(const T *r, const T *phi, const T *val,
+                           std::size_t size) {
+    for (std::size_t i{}; i != size; ++i) {
+      _pixelData.fill(_pixelGrid->polarToPixel(r[i], phi[i]),
+                      _colorScheme->valueToColor(val[i]));
     }
-    _pixels.loadTexture();
+    _pixelData.loadTexture();
+  }
+
+  // Set Cartesian Data
+  template <typename T>
+  inline void setCartesianData(const T *y, const T *x, const T *val,
+                               std::size_t size) {
+    for (std::size_t i{}; i != size; ++i) {
+      _pixelData.fill(_pixelGrid->cartToPixel(y[i], x[i]),
+                      _colorScheme->valueToColor(val[i]));
+    }
+    _pixelData.loadTexture();
   }
 
   // Get Pixel Data
-  const PixelData &pixelData() const { return _pixels; }
+  const PixelData &pixelData() const { return _pixelData; }
 
   // Display Scatter
   inline void setDisplayScatter(bool display) { _displayScatter = display; }
@@ -56,8 +67,8 @@ public:
 private:
   ImVec2 _boundsMin;
   ImVec2 _boundsMax;
-  PixelData _pixels;
-  PolarGrid _grid;
+  PixelData _pixelData;
+  std::shared_ptr<IPixelGrid> _pixelGrid{};
   std::unique_ptr<ColorScheme> _colorScheme{new ColorSchemeMono};
   bool _displayScatter{false};
 };

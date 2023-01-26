@@ -7,7 +7,7 @@ set(CXX_CMAKE_STANDARD_REQUIRED ON)
 
 set(IMPIXELWIDGETS_SOURCES
     RadarWidget.cpp
-    PolarGrid.cpp
+    PixelPolarGrid.cpp
     PixelData.cpp
     ColorSchemeTurbo.cpp
 )

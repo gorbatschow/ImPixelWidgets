@@ -1,6 +1,6 @@
 #include "RadarWidget.h"
 
-RadarWidget::RadarWidget() { setGrid(_grid); }
+RadarWidget::RadarWidget() {}
 
 void RadarWidget::paint() {
   const auto flags_plt{ImPlotFlags_NoTitle | ImPlotFlags_NoLegend |
@@ -8,24 +8,25 @@ void RadarWidget::paint() {
                        ImPlotFlags_Equal};
 
   if (ImPlot::BeginPlot("Plot", {-1, -1}, flags_plt)) {
-    ImPlot::PlotImage("Pixels", _pixels.imID(), _boundsMin, _boundsMax);
+    if (_pixelGrid) {
+      ImPlot::PlotImage("Pixels", _pixelData.imID(), _boundsMin, _boundsMax);
+    }
 
     if (_displayScatter) {
-      ImPlot::PlotScatter("Nodes", _grid.xNodes().data(), _grid.yNodes().data(),
-                          _grid.xNodes().size());
+      ImPlot::PlotScatter("Nodes", _pixelGrid->xNodes2D(),
+                          _pixelGrid->yNodes2D(), _pixelGrid->nodeSize());
     }
 
     ImPlot::EndPlot();
   }
 }
 
-void RadarWidget::setGrid(const PolarGrid &grid) {
-  _grid = grid;
-  _pixels.resize(_grid.pixelWidth(), _grid.pixelHeight());
-  _pixels.fill(ColorRGBA_Aqua);
-  _pixels.loadTexture();
+void RadarWidget::setPixelGrid(std::shared_ptr<IPixelGrid> grid) {
+  _pixelGrid.swap(grid);
+  _pixelData.resize(_pixelGrid->pixelWidth(), _pixelGrid->pixelHeight());
+  _pixelData.fill(ColorRGBA_Aqua);
+  _pixelData.loadTexture();
 
-  const auto r{_grid.distanceMax()};
-  _boundsMin = {float(-r), float(-r)};
-  _boundsMax = {float(+r), float(+r)};
+  _boundsMin = _pixelGrid->boundsMin();
+  _boundsMax = _pixelGrid->boundsMax();
 }
