@@ -21,10 +21,10 @@ public:
   }
 
   // Cartesian To Pixel
-  virtual const std::vector<std::size_t> &cartesianToPixel(double y,
-                                                           double x) override {
+  virtual const std::vector<std::size_t> &cartesianToPixel(double x,
+                                                           double y) override {
     double r{}, phi{};
-    cartesianToPolar(y, x, r, phi);
+    cartesianToPolar(x, y, r, phi);
     return polarToPixel(r, phi);
   }
 
@@ -110,7 +110,7 @@ public:
     y = r * sind(90. - phi - rotation() + _baseRotation);
   }
 
-  inline void cartesianToPolar(double y, double x, double &r,
+  inline void cartesianToPolar(double x, double y, double &r,
                                double &phi) const {
     r = sqrt(x * x + y * y);
     phi = fmod(90. - atan2d(y, x) + 360. - rotation() + _baseRotation, 360.);
