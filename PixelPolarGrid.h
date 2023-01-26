@@ -30,12 +30,12 @@ public:
 
   // Cartesian Bounds Min
   virtual ImVec2 cartesianBoundsMin() const override {
-    return {-float(_config.distanceMax()), -float(_config.distanceMax())};
+    return {float(-_config.distanceMax()), float(-_config.distanceMax())};
   }
 
   // Cartesian Bounds Max
   virtual ImVec2 cartesianBoundsMax() const override {
-    return {+float(_config.distanceMax()), +float(_config.distanceMax())};
+    return {float(+_config.distanceMax()), float(+_config.distanceMax())};
   }
 
   // Make Cartesian Mesh
@@ -53,12 +53,7 @@ public:
 
   // Config
   // ---------------------------------------------------------------------------
-  inline void setConfig(const PolarGridConfig &config) {
-    _config = config;
-    updateDistanceNodes();
-    updateBearingNodes();
-    bindNodesToPixels();
-  }
+  void setConfig(const PolarGridConfig &config);
   inline const PolarGridConfig &config() const { return _config; }
 
   // Polar Nodes

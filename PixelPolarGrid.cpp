@@ -1,7 +1,8 @@
 #include "PixelPolarGrid.h"
 
-PixelPolarGrid::PixelPolarGrid(const PolarGridConfig &config)
-    : _config(config) {}
+PixelPolarGrid::PixelPolarGrid(const PolarGridConfig &config) {
+  setConfig(config);
+}
 
 void PixelPolarGrid::makeCartesianMesh(std::vector<double> &x,
                                        std::vector<double> &y) const {
@@ -27,6 +28,13 @@ void PixelPolarGrid::makePolarMesh(std::vector<double> &r,
       ++k;
     }
   }
+}
+
+void PixelPolarGrid::setConfig(const PolarGridConfig &config) {
+  _config = config;
+  updateDistanceNodes();
+  updateBearingNodes();
+  bindNodesToPixels();
 }
 
 void PixelPolarGrid::updateDistanceNodes() {

@@ -34,6 +34,12 @@ public:
   // Grid Size
   virtual std::size_t gridSize() const { return 0; }
 
+  // Polar Contains
+  virtual bool polarContains(double r, double phi) const { return false; }
+
+  // Cartesian Contains
+  virtual bool cartesianContains(double x, double y) const { return false; }
+
   // Pixel Size
   // ---------------------------------------------------------------------------
   inline void setPixelWidth(std::size_t w) { _pixelWidth = w; }
