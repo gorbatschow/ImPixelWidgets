@@ -26,8 +26,8 @@ public:
                                                            double y) override {
     double r{}, phi{};
     cartesianToPolar(x, y, r, phi);
-    r = std::ceil(r * _cartToPixelRound) / _cartToPixelRound;
-    phi = std::ceil(phi * _cartToPixelRound) / _cartToPixelRound;
+    r = roundValue(r, _cartToPixelDecimals);
+    phi = roundValue(phi, _cartToPixelDecimals);
     return polarToPixel(r, phi);
   }
 
@@ -120,6 +120,10 @@ public:
     node_phi = std::floor((phi - _config.bearingMin()) / _config.bearingStep());
   }
 
+  inline double roundValue(double value, double decimals) {
+    return std::ceil(value * decimals) / decimals;
+  }
+
 private:
   void updateDistanceNodes();
   void updateBearingNodes();
@@ -137,5 +141,5 @@ private:
 
   // Base Rotation
   const double _baseRotation{90.f};
-  const double _cartToPixelRound{1e3};
+  const double _cartToPixelDecimals{1e3};
 };
