@@ -1,6 +1,8 @@
 #pragma once
+#include "PixelGridConfig.h"
+#include <cstddef>
 
-class PolarGridConfig {
+class PolarGridConfig : public PixelGridConfig {
 public:
   PolarGridConfig() = default;
   ~PolarGridConfig() = default;

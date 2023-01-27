@@ -54,6 +54,14 @@ public:
     return _distanceNodes.size() * _bearingNodes.size();
   }
 
+  // Pixel Size
+  virtual std::size_t pixelWidth() const override {
+    return _config.pixelWidth();
+  }
+  virtual std::size_t pixelHeight() const override {
+    return _config.pixelHeight();
+  }
+
   // Config
   // ---------------------------------------------------------------------------
   void setConfig(const PolarGridConfig &config);
@@ -104,14 +112,15 @@ public:
 
   inline void polarToCartesian(double r, double phi, double &x,
                                double &y) const {
-    x = r * cosd(90. - phi - rotation() + _baseRotation);
-    y = r * sind(90. - phi - rotation() + _baseRotation);
+    x = r * cosd(90. - phi - _config.rotation() + _baseRotation);
+    y = r * sind(90. - phi - _config.rotation() + _baseRotation);
   }
 
   inline void cartesianToPolar(double x, double y, double &r,
                                double &phi) const {
     r = sqrt(x * x + y * y);
-    phi = fmod(90. - atan2d(y, x) + 360. - rotation() + _baseRotation, 360.);
+    phi = fmod(90. - atan2d(y, x) + 360. - _config.rotation() + _baseRotation,
+               360.);
   }
 
   inline void polarToNode(double r, double phi, std::size_t &node_r,

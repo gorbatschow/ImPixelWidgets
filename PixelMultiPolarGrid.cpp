@@ -15,6 +15,14 @@ const std::vector<std::size_t> &PixelMultiPolarGrid::polarToPixel(double r,
   return IPixelGrid::emptyPixel();
 }
 
+const std::vector<std::size_t> &
+PixelMultiPolarGrid::cartesianToPixel(double x, double y) {
+  for (const auto &grid : _gridList) {
+    return grid->cartesianToPixel(x, y);
+  }
+  return IPixelGrid::emptyPixel();
+}
+
 void PixelMultiPolarGrid::makeCartesianMesh(std::vector<double> &x,
                                             std::vector<double> &y) const {
   for (const auto &grid : _gridList) {
@@ -27,6 +35,24 @@ void PixelMultiPolarGrid::makePolarMesh(std::vector<double> &r,
   for (const auto &grid : _gridList) {
     grid->makePolarMesh(r, phi);
   }
+}
+
+bool PixelMultiPolarGrid::polarContains(double r, double phi) const {
+  for (const auto &grid : _gridList) {
+    if (grid->polarContains(r, phi)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool PixelMultiPolarGrid::cartesianContains(double x, double y) const {
+  for (const auto &grid : _gridList) {
+    if (grid->cartesianContains(x, y)) {
+      return true;
+    }
+  }
+  return false;
 }
 
 void PixelMultiPolarGrid::setConfig(

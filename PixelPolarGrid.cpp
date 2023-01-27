@@ -73,13 +73,11 @@ void PixelPolarGrid::bindNodesToPixels() {
   double r{}, phi{};
   double x{-_config.distanceMax()};
   double y{+_config.distanceMax()};
-  const double dy{_config.distanceMax() * 2. /
-                  double(IPixelGrid::pixelHeight())};
-  const double dx{_config.distanceMax() * 2. /
-                  double(IPixelGrid::pixelWidth())};
+  const double dy{_config.distanceMax() * 2. / double(_config.pixelHeight())};
+  const double dx{_config.distanceMax() * 2. / double(_config.pixelWidth())};
 
-  for (std::size_t i{}, k{}; i != IPixelGrid::pixelHeight(); ++i) {
-    for (std::size_t j{}; j != IPixelGrid::pixelWidth(); ++j, ++k) {
+  for (std::size_t i{}, k{}; i != _config.pixelHeight(); ++i) {
+    for (std::size_t j{}; j != _config.pixelWidth(); ++j, ++k) {
       cartesianToPolar(x, y, r, phi);
       polarToNode(r, phi, node_r, node_phi);
       x += dx;
