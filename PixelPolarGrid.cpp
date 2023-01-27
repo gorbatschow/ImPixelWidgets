@@ -6,11 +6,14 @@ PixelPolarGrid::PixelPolarGrid(const PolarGridConfig &config) {
 
 void PixelPolarGrid::makeCartesianMesh(std::vector<double> &x,
                                        std::vector<double> &y) const {
-  x.resize(gridSize());
-  y.resize(gridSize());
-  for (std::size_t i{}, k{}; i != _distanceNodes.size(); ++i) {
-    for (std::size_t j{}; j != _bearingNodes.size(); ++j, ++k) {
-      polarToCartesian(_distanceNodes[i], _bearingNodes[j], x[k], y[k]);
+  x.reserve(gridSize());
+  y.reserve(gridSize());
+  double x_k{}, y_k{};
+  for (std::size_t i{}; i != _distanceNodes.size(); ++i) {
+    for (std::size_t j{}; j != _bearingNodes.size(); ++j) {
+      polarToCartesian(_distanceNodes[i], _bearingNodes[j], x_k, y_k);
+      x.push_back(x_k);
+      y.push_back(y_k);
     }
   }
 }
@@ -18,14 +21,12 @@ void PixelPolarGrid::makeCartesianMesh(std::vector<double> &x,
 void PixelPolarGrid::makePolarMesh(std::vector<double> &r,
                                    std::vector<double> &phi) const {
 
-  r.resize(gridSize());
-  phi.resize(gridSize());
-  std::size_t k{};
+  r.reserve(gridSize());
+  phi.reserve(gridSize());
   for (const auto &r_k : _distanceNodes) {
     for (const auto &phi_k : _bearingNodes) {
-      r[k] = r_k;
-      phi[k] = phi_k;
-      ++k;
+      r.push_back(r_k);
+      phi.push_back(phi_k);
     }
   }
 }

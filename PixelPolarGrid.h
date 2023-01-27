@@ -3,6 +3,7 @@
 #include "PolarGridConfig.h"
 #include <cassert>
 #include <cmath>
+#include <numeric>
 #include <vector>
 
 class PixelPolarGrid : public IPixelGrid {
@@ -25,6 +26,8 @@ public:
                                                            double y) override {
     double r{}, phi{};
     cartesianToPolar(x, y, r, phi);
+    r = std::ceil(r * _cartToPixelRound) / _cartToPixelRound;
+    phi = std::ceil(phi * _cartToPixelRound) / _cartToPixelRound;
     return polarToPixel(r, phi);
   }
 
@@ -134,4 +137,5 @@ private:
 
   // Base Rotation
   const double _baseRotation{90.f};
+  const double _cartToPixelRound{1e3};
 };

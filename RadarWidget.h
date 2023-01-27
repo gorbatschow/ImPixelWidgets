@@ -48,10 +48,10 @@ public:
 
   // Set Cartesian Data
   template <typename T>
-  inline void setCartesianData(const T *y, const T *x, const T *val,
+  inline void setCartesianData(const T *x, const T *y, const T *val,
                                std::size_t size) {
     for (std::size_t i{}; i != size; ++i) {
-      _pixelData.fill(_pixelGrid->cartesianToPixel(y[i], x[i]),
+      _pixelData.fill(_pixelGrid->cartesianToPixel(x[i], y[i]),
                       _colorScheme->valueToColor(val[i]));
     }
     _pixelData.loadTexture();

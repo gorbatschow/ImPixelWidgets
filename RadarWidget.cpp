@@ -29,5 +29,7 @@ void RadarWidget::setPixelGrid(std::shared_ptr<IPixelGrid> grid) {
 
   _boundsMin = _pixelGrid->cartesianBoundsMin();
   _boundsMax = _pixelGrid->cartesianBoundsMax();
+  _xGridNodes.clear();
+  _yGridNodes.clear();
   _pixelGrid->makeCartesianMesh(_xGridNodes, _yGridNodes);
 }
