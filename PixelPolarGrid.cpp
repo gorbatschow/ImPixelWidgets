@@ -71,10 +71,10 @@ void PixelPolarGrid::bindNodesToPixels() {
   // Fill
   std::size_t node_r{}, node_phi{};
   double r{}, phi{};
-  double x{-_config.distanceMax()};
-  double y{+_config.distanceMax()};
-  const double dy{_config.distanceMax() * 2. / double(_config.pixelHeight())};
-  const double dx{_config.distanceMax() * 2. / double(_config.pixelWidth())};
+  double x{-_config.distanceRange()};
+  double y{+_config.distanceRange()};
+  const double dy{_config.distanceRange() * 2. / double(_config.pixelHeight())};
+  const double dx{_config.distanceRange() * 2. / double(_config.pixelWidth())};
 
   for (std::size_t i{}, k{}; i != _config.pixelHeight(); ++i) {
     for (std::size_t j{}; j != _config.pixelWidth(); ++j, ++k) {
@@ -89,7 +89,7 @@ void PixelPolarGrid::bindNodesToPixels() {
       }
       _pixelMap[node_r][node_phi].push_back(k);
     }
-    x = -_config.distanceMax();
+    x = -_config.distanceRange();
     y -= dy;
   }
 }

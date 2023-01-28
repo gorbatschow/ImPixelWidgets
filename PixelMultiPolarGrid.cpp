@@ -18,7 +18,9 @@ const std::vector<std::size_t> &PixelMultiPolarGrid::polarToPixel(double r,
 const std::vector<std::size_t> &
 PixelMultiPolarGrid::cartesianToPixel(double x, double y) {
   for (const auto &grid : _gridList) {
-    return grid->cartesianToPixel(x, y);
+    if (grid->cartesianContains(x, y)) {
+      return grid->cartesianToPixel(x, y);
+    }
   }
   return IPixelGrid::emptyPixel();
 }
@@ -63,10 +65,8 @@ void PixelMultiPolarGrid::setConfig(
     _gridList.push_back(std::make_unique<PixelPolarGrid>(config));
   }
 
-  _distance = 0;
   _gridSize = 0;
   for (const auto &grid : _gridList) {
-    _distance = std::max(_distance, grid->config().distanceMax());
     _gridSize += grid->gridSize();
   }
 }

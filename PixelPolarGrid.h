@@ -33,12 +33,12 @@ public:
 
   // Cartesian Bounds Min
   virtual ImVec2 cartesianBoundsMin() const override {
-    return {float(-_config.distanceMax()), float(-_config.distanceMax())};
+    return {float(-_config.distanceRange()), float(-_config.distanceRange())};
   }
 
   // Cartesian Bounds Max
   virtual ImVec2 cartesianBoundsMax() const override {
-    return {float(+_config.distanceMax()), float(+_config.distanceMax())};
+    return {float(+_config.distanceRange()), float(+_config.distanceRange())};
   }
 
   // Make Cartesian Mesh
@@ -52,6 +52,16 @@ public:
   // Grid Size
   virtual std::size_t gridSize() const override {
     return _distanceNodes.size() * _bearingNodes.size();
+  }
+
+  // Polar Contains
+  virtual bool polarContains(double r, double phi) const override {
+    return _config.containsDistance(r) && _config.containsBearing(phi);
+  }
+
+  // Cartesian Contains
+  virtual bool cartesianContains(double x, double y) const override {
+    return false;
   }
 
   // Pixel Size

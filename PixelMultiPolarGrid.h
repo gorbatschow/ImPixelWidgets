@@ -13,9 +13,6 @@ public:
   // Destructor
   virtual ~PixelMultiPolarGrid() override = default;
 
-  // Interface
-  // ---------------------------------------------------------------------------
-
   // Polar To Pixel
   virtual const std::vector<std::size_t> &polarToPixel(double r,
                                                        double phi) override;
@@ -26,11 +23,11 @@ public:
 
   // Cartesian Bounds Min
   virtual ImVec2 cartesianBoundsMin() const override {
-    return {float(-_distance), float(-_distance)};
+    return {float(-distanceRange()), float(-distanceRange())};
   }
   // Cartesian Bounds Max
   virtual ImVec2 cartesianBoundsMax() const override {
-    return {float(+_distance), float(+_distance)};
+    return {float(+distanceRange()), float(+distanceRange())};
   }
 
   // Make Cartesian Mesh
@@ -60,6 +57,14 @@ public:
     return _gridList.front()->config().pixelHeight();
   }
 
+  // Distance Range
+  inline double distanceRange() const {
+    if (_gridList.empty()) {
+      return 0;
+    }
+    return _gridList.front()->config().distanceRange();
+  }
+
   // Polar Contains
   virtual bool polarContains(double r, double phi) const override;
 
@@ -67,11 +72,9 @@ public:
   virtual bool cartesianContains(double x, double y) const override;
 
   // Config
-  // ---------------------------------------------------------------------------
   void setConfig(const std::vector<PolarGridConfig> &configList);
 
 private:
   std::vector<std::unique_ptr<PixelPolarGrid>> _gridList;
-  double _distance{};
   std::size_t _gridSize{};
 };
