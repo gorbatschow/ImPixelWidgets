@@ -44,7 +44,7 @@ private:
   double _distanceMin{100.};
   double _distanceMax{1000.};
   double _distanceStep{10.};
-  double _distanceRange{};
+  double _distanceRange{1100.};
   double _bearingMin{0.};
   double _bearingMax{180.};
   double _bearingStep{5.};
