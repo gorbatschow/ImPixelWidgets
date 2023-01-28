@@ -23,9 +23,7 @@ public:
   }
 
   inline void setDistanceRange(double range) { _distanceRange = range; }
-  inline double distanceRange() const {
-    return _distanceRange > _distanceMax ? _distanceRange : _distanceMax;
-  }
+  inline double distanceRange() const { return _distanceRange; }
 
   // Bearing
   // ---------------------------------------------------------------------------
