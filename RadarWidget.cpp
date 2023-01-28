@@ -13,6 +13,8 @@ void RadarWidget::paint() {
     }
 
     if (_displayScatter) {
+      ImPlot::SetNextMarkerStyle(ImPlotMarker_Cross, IMPLOT_AUTO,
+                                 IMPLOT_AUTO_COL, IMPLOT_AUTO, {0, 0, 0, 255});
       ImPlot::PlotScatter("Nodes", _xGridNodes.data(), _yGridNodes.data(),
                           _xGridNodes.size());
     }
