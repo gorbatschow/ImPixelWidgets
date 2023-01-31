@@ -75,7 +75,7 @@ public:
   }
 
   // Clear Image
-  inline void clearImage() { _pixelData.fill(ColorRGBA::Transparent()); }
+  inline void clearImage() { _pixelData.clear(); }
 
   // Fill Image
   inline void fillImage(const ColorRGBA &color) { _pixelData.fill(color); }
