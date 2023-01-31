@@ -22,6 +22,13 @@ public:
   // Get Grid
   const IPixelGrid &grid() const { return (*_pixelGrid); }
 
+  // Set Pixel Sub Grid
+  void setPixelSubGrid(std::shared_ptr<IPixelGrid> subgrid) {
+    _pixelSubGrid = subgrid;
+  }
+
+  const IPixelGrid subGrid() const { return (*_pixelSubGrid); }
+
   // Set Color Scheme
   template <typename T> void setColorScheme(double min, double max) {
     _colorScheme.reset(new T);
@@ -39,10 +46,23 @@ public:
   template <typename T>
   inline void setPolarData(const T *r, const T *phi, const T *val,
                            std::size_t size) {
-    for (std::size_t i{}; i != size; ++i) {
-      _pixelData.fill(_pixelGrid->polarToPixel(r[i], phi[i]),
-                      _colorScheme->valueToColor(val[i]));
+    if (!_pixelSubGrid) {
+      for (std::size_t i{}; i != size; ++i) {
+        _pixelData.fill(_pixelGrid->polarToPixel(r[i], phi[i]),
+                        _colorScheme->valueToColor(val[i]));
+      }
+    } else {
+      std::vector<std::size_t> pixel;
+      double phi_min{}, phi_max{};
+      for (std::size_t i{}; i != size; ++i) {
+        /*
+    _pixelGrid.
+    _pixelData.fill(_pixelGrid->polarToPixel(r[i], phi[i]),
+                    _colorScheme->valueToColor(val[i]));
+                    */
+      }
     }
+
     _pixelData.loadTexture();
   }
 
@@ -73,6 +93,7 @@ private:
   ImVec2 _boundsMax;
   PixelData _pixelData;
   std::shared_ptr<IPixelGrid> _pixelGrid{};
+  std::shared_ptr<IPixelGrid> _pixelSubGrid{};
   std::unique_ptr<ColorScheme> _colorScheme{new ColorSchemeMono};
   bool _displayScatter{false};
   std::vector<double> _xGridNodes, _yGridNodes;

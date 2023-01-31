@@ -72,6 +72,28 @@ public:
     return _config.pixelHeight();
   }
 
+  // Distance Bounds
+  virtual bool distanceBounds(double r, double &min,
+                              double &max) const override {
+    if (containsDistance(r)) {
+      min = _distanceNodes.at(distanceToNode(r));
+      max = min + _config.distanceStep();
+      return true;
+    }
+    return false;
+  }
+
+  // Bearing Bounds
+  virtual bool bearingBounds(double phi, double &min,
+                             double &max) const override {
+    if (containsBearing(phi)) {
+      min = _bearingNodes.at(bearingToNode(phi));
+      max = min + _config.bearingStep();
+      return true;
+    }
+    return false;
+  }
+
   // Config
   // ---------------------------------------------------------------------------
   void setConfig(const PolarGridConfig &config);
@@ -135,12 +157,28 @@ public:
 
   inline void polarToNode(double r, double phi, std::size_t &node_r,
                           std::size_t &node_phi) const {
-    node_r = std::floor((r - _config.distanceMin()) / _config.distanceStep());
-    node_phi = std::floor((phi - _config.bearingMin()) / _config.bearingStep());
+    node_r = distanceToNode(r);
+    node_phi = bearingToNode(phi);
+  }
+
+  inline std::size_t distanceToNode(double r) const {
+    return std::floor((r - _config.distanceMin()) / _config.distanceStep());
+  }
+
+  inline std::size_t bearingToNode(double phi) const {
+    return std::floor((phi - _config.bearingMin()) / _config.bearingStep());
   }
 
   inline double roundValue(double value, double decimals) {
     return std::ceil(value * decimals) / decimals;
+  }
+
+  inline bool containsDistance(double r) const {
+    return _config.containsDistance(r);
+  }
+
+  inline bool containsBearing(double phi) const {
+    return _config.containsBearing(phi);
   }
 
 private:

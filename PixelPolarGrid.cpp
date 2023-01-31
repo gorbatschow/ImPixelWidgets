@@ -43,7 +43,7 @@ void PixelPolarGrid::updateDistanceNodes() {
   _distanceNodes.reserve(
       std::size_t(_config.distanceMax() / _config.distanceStep()));
   auto r{_config.distanceMin()};
-  while (r <= _config.distanceMax()) {
+  while (r < _config.distanceMax()) {
     _distanceNodes.push_back(r);
     r += _config.distanceStep();
   }
@@ -54,7 +54,7 @@ void PixelPolarGrid::updateBearingNodes() {
   _bearingNodes.reserve(
       std::size_t(_config.bearingMax() / _config.bearingStep()));
   auto phi{_config.bearingMin()};
-  while (phi <= _config.bearingMax()) {
+  while (phi < _config.bearingMax()) {
     _bearingNodes.push_back(phi);
     phi += _config.bearingStep();
   }

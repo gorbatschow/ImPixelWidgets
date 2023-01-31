@@ -17,6 +17,10 @@ public:
     return _emptyPixel;
   };
 
+  // Sector To Pixel
+  virtual void sectorToPixel(double r, double phi_min, double phi_max,
+                             std::vector<std::vector<std::size_t>> &pixel) {}
+
   // Cartesian Bounds Min
   virtual ImVec2 cartesianBoundsMin() const { return {0, 0}; };
 
@@ -43,6 +47,16 @@ public:
   // Pixel Size
   virtual std::size_t pixelWidth() const { return 0; }
   virtual std::size_t pixelHeight() const { return 0; }
+
+  // Distance Bounds
+  virtual bool distanceBounds(double r, double &min, double &max) const {
+    return false;
+  }
+
+  // Bearing Bounds
+  virtual bool bearingBounds(double phi, double &min, double &max) const {
+    return false;
+  }
 
 protected:
   inline const std::vector<std::size_t> &emptyPixel() const {

@@ -57,6 +57,26 @@ bool PixelMultiPolarGrid::cartesianContains(double x, double y) const {
   return false;
 }
 
+bool PixelMultiPolarGrid::distanceBounds(double r, double &min,
+                                         double &max) const {
+  for (const auto &grid : _gridList) {
+    if (grid->distanceBounds(r, min, max)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool PixelMultiPolarGrid::bearingBounds(double phi, double &min,
+                                        double &max) const {
+  for (const auto &grid : _gridList) {
+    if (grid->bearingBounds(phi, min, max)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 void PixelMultiPolarGrid::setConfig(
     const std::vector<PolarGridConfig> &configList) {
   _gridList.clear();

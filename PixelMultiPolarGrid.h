@@ -71,6 +71,14 @@ public:
   // Cartesian Contains
   virtual bool cartesianContains(double x, double y) const override;
 
+  // Range Bounds
+  virtual bool distanceBounds(double r, double &min,
+                              double &max) const override;
+
+  // Bearing Bounds
+  virtual bool bearingBounds(double phi, double &min,
+                             double &max) const override;
+
   // Config
   void setConfig(const std::vector<PolarGridConfig> &configList);
 
