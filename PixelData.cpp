@@ -3,7 +3,7 @@
 
 PixelData::PixelData() {
   resize(4, 4);
-  fill(ColorRGBA_Aqua);
+  fill(ColorRGBA::Aqua());
   loadTexture();
 }
 
@@ -12,7 +12,7 @@ PixelData::~PixelData() { unloadTexture(); }
 void PixelData::resize(std::size_t w, std::size_t h) {
   _width = w;
   _height = h;
-  _blob.resize(_width * _height * ColorRGBA_N, 0);
+  _blob.resize(_width * _height * ColorRGBA::Size(), 0);
   _blob.shrink_to_fit();
 }
 
@@ -35,11 +35,8 @@ void PixelData::unloadTexture() {
 }
 
 void PixelData::fill(const ColorRGBA &rgba) {
-  for (std::size_t i = 0; i != _blob.size(); i = i + ColorRGBA_N) {
-    _blob[i] = rgba[0];
-    _blob[i + 1] = rgba[1];
-    _blob[i + 2] = rgba[2];
-    _blob[i + 3] = rgba[3];
+  for (std::size_t i = 0; i != _blob.size(); i = i + ColorRGBA::Size()) {
+    rgba.fill(&_blob[i]);
   }
 }
 
@@ -47,11 +44,8 @@ void PixelData::fill(const std::vector<std::size_t> &indexes,
                      const ColorRGBA &rgba) {
   std::size_t i{};
   for (const auto &ind : indexes) {
-    i = ind * ColorRGBA_N;
-    _blob[i] = rgba[0];
-    _blob[i + 1] = rgba[1];
-    _blob[i + 2] = rgba[2];
-    _blob[i + 3] = rgba[3];
+    i = ind * ColorRGBA::Size();
+    rgba.fill(&_blob[i]);
   }
 }
 

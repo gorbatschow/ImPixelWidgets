@@ -24,11 +24,11 @@ public:
   void unloadTexture();
 
   // Fill
-  void fill(const ColorRGBA &rgba = ColorRGBA_Aqua);
+  void fill(const ColorRGBA &rgba = ColorRGBA::Aqua());
 
   // Fill
   void fill(const std::vector<std::size_t> &indexes,
-            const ColorRGBA &rgba = ColorRGBA_Lime);
+            const ColorRGBA &rgba = ColorRGBA::Lime());
 
   // ID
   inline GLuint glID() const { return _id; }

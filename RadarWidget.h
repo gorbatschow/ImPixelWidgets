@@ -33,7 +33,7 @@ public:
   const ColorScheme &colorScheme() const { return (*_colorScheme); }
 
   // Clear Data
-  inline void clearData() { _pixelData.fill(ColorRGBA_Transparent); }
+  inline void clearData() { _pixelData.fill(ColorRGBA::Transparent()); }
 
   // Set Polar Data
   template <typename T>
@@ -64,6 +64,10 @@ public:
   inline void setDisplayScatter(bool display) { _displayScatter = display; }
   inline bool displayScatter() const { return _displayScatter; }
 
+  // Set Background Color
+  inline void setBackgroundColor(ColorRGBA color) { _backgroudColor = color; }
+  inline const ColorRGBA &backgroundColor() const { return _backgroudColor; }
+
 private:
   ImVec2 _boundsMin;
   ImVec2 _boundsMax;
@@ -72,4 +76,5 @@ private:
   std::unique_ptr<ColorScheme> _colorScheme{new ColorSchemeMono};
   bool _displayScatter{false};
   std::vector<double> _xGridNodes, _yGridNodes;
+  ColorRGBA _backgroudColor{ColorRGBA::Transparent()};
 };
