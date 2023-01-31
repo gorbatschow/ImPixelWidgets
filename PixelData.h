@@ -25,12 +25,11 @@ public:
 
   // Clear
   void clear();
+  void clear(const std::vector<std::size_t> &pixel);
 
   // Fill
   void fill(const ColorRGBA &rgba = ColorRGBA::Aqua());
-
-  // Fill
-  void fill(const std::vector<std::size_t> &indexes,
+  void fill(const std::vector<std::size_t> &pixel,
             const ColorRGBA &rgba = ColorRGBA::Lime());
 
   // ID

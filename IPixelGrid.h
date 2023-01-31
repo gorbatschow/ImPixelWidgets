@@ -8,18 +8,23 @@ public:
   virtual ~IPixelGrid() = default;
 
   // Polar To Pixel
-  virtual const std::vector<std::size_t> &polarToPixel(double r, double phi) {
+  virtual const std::vector<std::size_t> &polarToPixel(double r,
+                                                       double phi) const {
     return _emptyPixel;
   };
 
   // Cartesian To Pixel
-  virtual const std::vector<std::size_t> &cartesianToPixel(double x, double y) {
+  virtual const std::vector<std::size_t> &cartesianToPixel(double x,
+                                                           double y) const {
     return _emptyPixel;
   };
 
   // Sector To Pixel
-  virtual void sectorToPixel(double r, double phi_min, double phi_max,
-                             std::vector<std::vector<std::size_t>> &pixel) {}
+  virtual bool
+  sectorToPixel(double r, double phi_min, double phi_max,
+                std::vector<std::vector<std::size_t>> &pixel_list) const {
+    return false;
+  }
 
   // Cartesian Bounds Min
   virtual ImVec2 cartesianBoundsMin() const { return {0, 0}; };

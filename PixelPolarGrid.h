@@ -14,22 +14,17 @@ public:
   // Interface
   // ---------------------------------------------------------------------------
   // Polar To Pixel
-  virtual const std::vector<std::size_t> &polarToPixel(double r,
-                                                       double phi) override {
-    std::size_t node_r{}, node_phi{};
-    polarToNode(r, phi, node_r, node_phi);
-    return nodeToPixel(node_r, node_phi);
-  }
+  virtual const std::vector<std::size_t> &
+  polarToPixel(double r, double phi) const override;
 
   // Cartesian To Pixel
-  virtual const std::vector<std::size_t> &cartesianToPixel(double x,
-                                                           double y) override {
-    double r{}, phi{};
-    cartesianToPolar(x, y, r, phi);
-    r = roundValue(r, _cartToPixelDecimals);
-    phi = roundValue(phi, _cartToPixelDecimals);
-    return polarToPixel(r, phi);
-  }
+  virtual const std::vector<std::size_t> &
+  cartesianToPixel(double x, double y) const override;
+
+  // Sector To Pixel
+  virtual bool sectorToPixel(
+      double r, double phi_min, double phi_max,
+      std::vector<std::vector<std::size_t>> &pixel_list) const override;
 
   // Cartesian Bounds Min
   virtual ImVec2 cartesianBoundsMin() const override {
@@ -74,25 +69,11 @@ public:
 
   // Distance Bounds
   virtual bool distanceBounds(double r, double &min,
-                              double &max) const override {
-    if (containsDistance(r)) {
-      min = _distanceNodes.at(distanceToNode(r));
-      max = min + _config.distanceStep();
-      return true;
-    }
-    return false;
-  }
+                              double &max) const override;
 
   // Bearing Bounds
   virtual bool bearingBounds(double phi, double &min,
-                             double &max) const override {
-    if (containsBearing(phi)) {
-      min = _bearingNodes.at(bearingToNode(phi));
-      max = min + _config.bearingStep();
-      return true;
-    }
-    return false;
-  }
+                             double &max) const override;
 
   // Config
   // ---------------------------------------------------------------------------
@@ -111,8 +92,8 @@ public:
 
   // Node Pixel Conversion
   // ---------------------------------------------------------------------------
-  inline const std::vector<std::size_t> &nodeToPixel(std::size_t node_r,
-                                                     std::size_t node_phi) {
+  inline const std::vector<std::size_t> &
+  nodeToPixel(std::size_t node_r, std::size_t node_phi) const {
     if (_distanceNodes.size() <= node_r) {
       return IPixelGrid::emptyPixel();
     }
@@ -122,7 +103,8 @@ public:
     return _pixelMap.at(node_r).at(node_phi);
   }
 
-  inline const std::vector<std::size_t> &nodeToPixel(std::size_t node_index) {
+  inline const std::vector<std::size_t> &
+  nodeToPixel(std::size_t node_index) const {
     const std::size_t node_r{node_index / _bearingNodes.size()};
     const std::size_t node_phi{node_index % _bearingNodes.size()};
     return nodeToPixel(node_r, node_phi);
@@ -169,7 +151,7 @@ public:
     return std::floor((phi - _config.bearingMin()) / _config.bearingStep());
   }
 
-  inline double roundValue(double value, double decimals) {
+  inline double roundValue(double value, double decimals) const {
     return std::ceil(value * decimals) / decimals;
   }
 

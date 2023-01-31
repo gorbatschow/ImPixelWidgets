@@ -13,12 +13,16 @@ void RadarWidget::paint() {
     }
 
     if (_displayScatter) {
-      ImPlot::SetNextMarkerStyle(ImPlotMarker_Cross, IMPLOT_AUTO,
+      ImPlot::SetNextMarkerStyle(ImPlotMarker_Asterisk, IMPLOT_AUTO,
                                  IMPLOT_AUTO_COL, IMPLOT_AUTO, {0, 0, 0, 255});
       ImPlot::PlotScatter("Nodes", _xGridNodes.data(), _yGridNodes.data(),
                           _xGridNodes.size());
-    }
 
+      ImPlot::SetNextMarkerStyle(ImPlotMarker_Cross, IMPLOT_AUTO,
+                                 IMPLOT_AUTO_COL, IMPLOT_AUTO, {0, 0, 0, 255});
+      ImPlot::PlotScatter("Nodes", _xSubGridNodes.data(), _ySubGridNodes.data(),
+                          _xSubGridNodes.size());
+    }
     ImPlot::EndPlot();
   }
 }
@@ -34,4 +38,11 @@ void RadarWidget::setPixelGrid(std::shared_ptr<IPixelGrid> grid) {
   _xGridNodes.clear();
   _yGridNodes.clear();
   _pixelGrid->makeCartesianMesh(_xGridNodes, _yGridNodes);
+}
+
+void RadarWidget::setPixelSubGrid(std::shared_ptr<IPixelGrid> subgrid) {
+  _pixelSubGrid.swap(subgrid);
+  _xSubGridNodes.clear();
+  _ySubGridNodes.clear();
+  _pixelSubGrid->makeCartesianMesh(_xSubGridNodes, _ySubGridNodes);
 }

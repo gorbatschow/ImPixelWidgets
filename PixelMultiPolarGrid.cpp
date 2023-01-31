@@ -5,8 +5,8 @@ PixelMultiPolarGrid::PixelMultiPolarGrid(
   setConfig(configList);
 }
 
-const std::vector<std::size_t> &PixelMultiPolarGrid::polarToPixel(double r,
-                                                                  double phi) {
+const std::vector<std::size_t> &
+PixelMultiPolarGrid::polarToPixel(double r, double phi) const {
   for (const auto &grid : _gridList) {
     if (grid->polarContains(r, phi)) {
       return grid->polarToPixel(r, phi);
@@ -16,13 +16,25 @@ const std::vector<std::size_t> &PixelMultiPolarGrid::polarToPixel(double r,
 }
 
 const std::vector<std::size_t> &
-PixelMultiPolarGrid::cartesianToPixel(double x, double y) {
+PixelMultiPolarGrid::cartesianToPixel(double x, double y) const {
   for (const auto &grid : _gridList) {
     if (grid->cartesianContains(x, y)) {
       return grid->cartesianToPixel(x, y);
     }
   }
   return IPixelGrid::emptyPixel();
+}
+
+bool PixelMultiPolarGrid::sectorToPixel(
+    double r, double phi_min, double phi_max,
+    std::vector<std::vector<std::size_t>> &pixel_list) const {
+
+  for (const auto &grid : _gridList) {
+    if (grid->sectorToPixel(r, phi_min, phi_max, pixel_list)) {
+      return true;
+    }
+  }
+  return false;
 }
 
 void PixelMultiPolarGrid::makeCartesianMesh(std::vector<double> &x,

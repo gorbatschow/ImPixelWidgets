@@ -37,16 +37,20 @@ void PixelData::unloadTexture() {
 
 void PixelData::clear() { memset(_blob.data(), {}, _blob.size()); }
 
+void PixelData::clear(const std::vector<std::size_t> &pixel) {
+  fill(pixel, ColorRGBA::Transparent());
+}
+
 void PixelData::fill(const ColorRGBA &rgba) {
   for (std::size_t i = 0; i != _blob.size(); i = i + ColorRGBA::Size()) {
     rgba.fill(&_blob[i]);
   }
 }
 
-void PixelData::fill(const std::vector<std::size_t> &indexes,
+void PixelData::fill(const std::vector<std::size_t> &pixel,
                      const ColorRGBA &rgba) {
   std::size_t i{};
-  for (const auto &ind : indexes) {
+  for (const auto &ind : pixel) {
     i = ind * ColorRGBA::Size();
     rgba.fill(&_blob[i]);
   }

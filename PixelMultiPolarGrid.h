@@ -14,12 +14,17 @@ public:
   virtual ~PixelMultiPolarGrid() override = default;
 
   // Polar To Pixel
-  virtual const std::vector<std::size_t> &polarToPixel(double r,
-                                                       double phi) override;
+  virtual const std::vector<std::size_t> &
+  polarToPixel(double r, double phi) const override;
 
   // Cartesian To Pixel
-  virtual const std::vector<std::size_t> &cartesianToPixel(double x,
-                                                           double y) override;
+  virtual const std::vector<std::size_t> &
+  cartesianToPixel(double x, double y) const override;
+
+  // Sector To Pixel
+  virtual bool sectorToPixel(
+      double r, double phi_min, double phi_max,
+      std::vector<std::vector<std::size_t>> &pixel_list) const override;
 
   // Cartesian Bounds Min
   virtual ImVec2 cartesianBoundsMin() const override {
