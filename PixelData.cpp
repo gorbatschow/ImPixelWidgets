@@ -1,4 +1,5 @@
 #include "PixelData.h"
+#include <cstring>
 #include <fstream>
 
 PixelData::PixelData() {
@@ -33,6 +34,8 @@ void PixelData::unloadTexture() {
     _id = {};
   }
 }
+
+void PixelData::clear() { memset(_blob.data(), {}, _blob.size()); }
 
 void PixelData::fill(const ColorRGBA &rgba) {
   for (std::size_t i = 0; i != _blob.size(); i = i + ColorRGBA::Size()) {

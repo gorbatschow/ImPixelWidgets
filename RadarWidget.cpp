@@ -25,8 +25,8 @@ void RadarWidget::paint() {
 
 void RadarWidget::setPixelGrid(std::shared_ptr<IPixelGrid> grid) {
   _pixelGrid.swap(grid);
+  _pixelData.clear();
   _pixelData.resize(_pixelGrid->pixelWidth(), _pixelGrid->pixelHeight());
-  _pixelData.fill(ColorRGBA::Aqua());
   _pixelData.loadTexture();
 
   _boundsMin = _pixelGrid->cartesianBoundsMin();
