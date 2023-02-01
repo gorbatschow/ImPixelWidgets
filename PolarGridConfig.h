@@ -19,7 +19,7 @@ public:
   inline double distanceStep() const { return _distanceStep; }
 
   inline bool containsDistance(double value) const {
-    return value >= _distanceMin && value < _distanceMax;
+    return value >= _distanceMin && value <= _distanceMax;
   }
 
   inline void setDistanceRange(double range) { _distanceRange = range; }
@@ -37,7 +37,7 @@ public:
   inline double bearingStep() const { return _bearingStep; }
 
   inline bool containsBearing(double value) const {
-    return value >= _bearingMin && value < _bearingMax;
+    return value >= _bearingMin && value <= _bearingMax;
   }
 
 private:
