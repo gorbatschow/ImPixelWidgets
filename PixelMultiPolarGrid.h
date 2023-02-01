@@ -84,6 +84,14 @@ public:
   virtual bool bearingBounds(double phi, double &min,
                              double &max) const override;
 
+  // Distance Nodes
+  virtual const std::vector<double> &
+  distanceNodes(double bearing) const override;
+
+  // Bearing Nodes
+  virtual const std::vector<double> &
+  bearingNodes(double distance) const override;
+
   // Config
   void setConfig(const std::vector<PolarGridConfig> &configList);
 

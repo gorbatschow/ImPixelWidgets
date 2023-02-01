@@ -56,6 +56,11 @@ void PixelData::fill(const std::vector<std::size_t> &pixel,
   }
 }
 
+ColorRGBA PixelData::colorAt(std::size_t pixel) const {
+  pixel *= ColorRGBA::Size();
+  return ColorRGBA(&_blob[pixel]);
+}
+
 bool PixelData::savePixelData(const std::string &fname) const {
 
   std::ofstream stream(fname.c_str(), std::fstream::out | std::fstream::binary);

@@ -70,11 +70,13 @@ public:
 
   // Polar Nodes
   // ---------------------------------------------------------------------------
-  inline const std::vector<double> &distanceNodes() const {
+  inline const std::vector<double> &
+  distanceNodes(double distance = 0) const override {
     return _distanceNodes;
   }
 
-  inline const std::vector<double> &bearingNodes() const {
+  inline const std::vector<double> &
+  bearingNodes(double distnace = 0) const override {
     return _bearingNodes;
   }
 

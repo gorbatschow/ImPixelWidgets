@@ -40,28 +40,40 @@ public:
   template <typename T>
   inline void setPolarData(const T *r, const T *phi, const T *val,
                            std::size_t size) {
-    if (!_pixelSubGrid) {
-      for (std::size_t i{}; i != size; ++i) {
-        _pixelData.fill(_pixelGrid->polarToPixel(r[i], phi[i]),
-                        _colorScheme->valueToColor(val[i]));
-      }
-    } else {
+
+    for (std::size_t i{}; i != size; ++i) {
+      _pixelData.fill(_pixelGrid->polarToPixel(r[i], phi[i]),
+                      _colorScheme->valueToColor(val[i]));
+    }
+
+    if (_pixelSubGrid) {
       std::vector<std::vector<std::size_t>> pixel_list;
-      double phi_min{}, phi_max{};
-      double alpha{}, dalpha{}, sign{};
-      ColorRGBA color{};
-      for (std::size_t i{}; i != size; ++i) {
-        color = _colorScheme->valueToColor(val[i]);
-        pixel_list.clear();
-        _pixelGrid->bearingBounds(phi[i], phi_min, phi_max);
-        _pixelSubGrid->sectorToPixel(r[i], phi_min, phi_max, pixel_list);
-        alpha = 55.;
-        dalpha = 200. / double(pixel_list.size()) * 2.;
-        for (std::size_t j{}; j != pixel_list.size(); ++j) {
-          color.setAlpha(std::clamp(alpha, 0., 255.));
-          _pixelData.fill(pixel_list[j], color);
-          sign = j > (double(pixel_list.size()) / 2. - 1) ? -1. : 1.;
-          alpha += dalpha * sign;
+
+      ColorRGBA color, color0, color1;
+      double phi_min{}, phi_max{}, phi_delta{};
+      const auto &r_nodes = _pixelSubGrid->distanceNodes();
+
+      for (std::size_t i{}; i != r_nodes.size(); ++i) {
+        const auto &phi_nodes = _pixelGrid->bearingNodes(r_nodes[i]);
+        if (phi_nodes.empty()) {
+          continue;
+        }
+        for (std::size_t j{}; j != phi_nodes.size(); ++j) {
+          pixel_list.clear();
+          _pixelGrid->bearingBounds(phi_nodes[j], phi_min, phi_max);
+          phi_delta = (phi_nodes[j + 1] - phi_nodes[j]) / 2.;
+          _pixelSubGrid->sectorToPixel(r_nodes[i], phi_min + phi_delta,
+                                       phi_max + phi_delta, pixel_list);
+          if (pixel_list.empty()) {
+            continue;
+          }
+
+          color0 = _pixelData.colorAt(pixel_list.front().front());
+          color1 = _pixelData.colorAt(pixel_list.back().back());
+          for (std::size_t k{}; k != pixel_list.size(); ++k) {
+            color = ColorRGBA::Mean(color0, color1, pixel_list.size() - k, k);
+            _pixelData.fill(pixel_list[k], color0);
+          }
         }
       }
     }

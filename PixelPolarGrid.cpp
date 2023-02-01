@@ -25,7 +25,10 @@ bool PixelPolarGrid::sectorToPixel(
     std::vector<std::vector<std::size_t>> &pixel_list) const {
   if (polarContains(r, phi_min) && polarContains(r, phi_max)) {
     while (phi_min < phi_max) {
-      pixel_list.push_back(polarToPixel(r, phi_min));
+      const auto &pixel{polarToPixel(r, phi_min)};
+      if (!pixel.empty()) {
+        pixel_list.push_back(pixel);
+      }
       phi_min += _config.bearingStep();
     }
     return true;

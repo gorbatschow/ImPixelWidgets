@@ -63,11 +63,24 @@ public:
     return false;
   }
 
+  // Distance Nodes
+  virtual const std::vector<double> &distanceNodes(double bearing = 0) const {
+    return _emptyNodes;
+  }
+
+  // Bearing Nodes
+  virtual const std::vector<double> &bearingNodes(double distance = 0) const {
+    return _emptyNodes;
+  }
+
 protected:
   inline const std::vector<std::size_t> &emptyPixel() const {
     return _emptyPixel;
   }
 
+  inline const std::vector<double> &emptyNodes() const { return _emptyNodes; }
+
 private:
   const std::vector<std::size_t> _emptyPixel{};
+  const std::vector<double> _emptyNodes{};
 };

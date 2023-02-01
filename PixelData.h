@@ -32,6 +32,9 @@ public:
   void fill(const std::vector<std::size_t> &pixel,
             const ColorRGBA &rgba = ColorRGBA::Lime());
 
+  // Get Color
+  ColorRGBA colorAt(std::size_t pixel) const;
+
   // ID
   inline GLuint glID() const { return _id; }
   inline ImTextureID imID() const { return (ImTextureID)(intptr_t)glID(); }

@@ -89,6 +89,26 @@ bool PixelMultiPolarGrid::bearingBounds(double phi, double &min,
   return false;
 }
 
+const std::vector<double> &
+PixelMultiPolarGrid::distanceNodes(double bearing) const {
+  for (const auto &grid : _gridList) {
+    if (grid->containsBearing(bearing)) {
+      return grid->distanceNodes();
+    }
+  }
+  return IPixelGrid::emptyNodes();
+}
+
+const std::vector<double> &
+PixelMultiPolarGrid::bearingNodes(double distance) const {
+  for (const auto &grid : _gridList) {
+    if (grid->containsDistance(distance)) {
+      return grid->bearingNodes();
+    }
+  }
+  return IPixelGrid::emptyNodes();
+}
+
 void PixelMultiPolarGrid::setConfig(
     const std::vector<PolarGridConfig> &configList) {
   _gridList.clear();

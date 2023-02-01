@@ -7,7 +7,9 @@ public:
   // Constructor
   ColorRGBA() {}
 
-  // Constructor
+  ColorRGBA(const uint8_t *ptr)
+      : _red{ptr[0]}, _green{ptr[1]}, _blue{ptr[2]}, _alpha{ptr[3]} {}
+
   ColorRGBA(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)
       : _red(red), _green(green), _blue(blue), _alpha(alpha) {}
 
@@ -40,6 +42,26 @@ public:
 
   static uint8_t Size() { return 4; }
   static uint8_t Max() { return 255; }
+
+  static ColorRGBA Mean(const ColorRGBA &first, const ColorRGBA &second) {
+    ColorRGBA color;
+    color.setRed(float(first.red()) + float(second.red()) / 2.f);
+    color.setGreen(float(first.green()) + float(second.green()) / 2.f);
+    color.setBlue(float(first.blue()) + float(second.blue()) / 2.f);
+    return color;
+  }
+
+  static ColorRGBA Mean(const ColorRGBA &first, const ColorRGBA &second,
+                        float w1, float w2) {
+    ColorRGBA color;
+    color.setRed(w1 * float(first.red()) +
+                 w2 * float(second.red()) / (w1 + w2));
+    color.setGreen(w1 * float(first.green()) +
+                   w2 * float(second.green()) / (w1 + w2));
+    color.setBlue(w1 * float(first.blue()) +
+                  w2 * float(second.blue()) / (w1 + w2));
+    return color;
+  }
 
 private:
   uint8_t _red{};
