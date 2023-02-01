@@ -27,14 +27,10 @@ public:
       std::vector<std::vector<std::size_t>> &pixel_list) const override;
 
   // Cartesian Bounds Min
-  virtual ImVec2 cartesianBoundsMin() const override {
-    return {float(-_config.distanceRange()), float(-_config.distanceRange())};
-  }
+  virtual ImVec2 cartesianBoundsMin() const override;
 
   // Cartesian Bounds Max
-  virtual ImVec2 cartesianBoundsMax() const override {
-    return {float(+_config.distanceRange()), float(+_config.distanceRange())};
-  }
+  virtual ImVec2 cartesianBoundsMax() const override;
 
   // Make Cartesian Mesh
   virtual void makeCartesianMesh(std::vector<double> &x,
@@ -45,14 +41,10 @@ public:
                              std::vector<double> &phi) const override;
 
   // Grid Size
-  virtual std::size_t gridSize() const override {
-    return _distanceNodes.size() * _bearingNodes.size();
-  }
+  virtual std::size_t gridSize() const override;
 
   // Polar Contains
-  virtual bool polarContains(double r, double phi) const override {
-    return _config.containsDistance(r) && _config.containsBearing(phi);
-  }
+  virtual bool polarContains(double r, double phi) const override;
 
   // Cartesian Contains
   virtual bool cartesianContains(double x, double y) const override {
@@ -60,12 +52,8 @@ public:
   }
 
   // Pixel Size
-  virtual std::size_t pixelWidth() const override {
-    return _config.pixelWidth();
-  }
-  virtual std::size_t pixelHeight() const override {
-    return _config.pixelHeight();
-  }
+  virtual std::size_t pixelWidth() const override;
+  virtual std::size_t pixelHeight() const override;
 
   // Distance Bounds
   virtual bool distanceBounds(double r, double &min,
@@ -92,23 +80,11 @@ public:
 
   // Node Pixel Conversion
   // ---------------------------------------------------------------------------
-  inline const std::vector<std::size_t> &
-  nodeToPixel(std::size_t node_r, std::size_t node_phi) const {
-    if (_distanceNodes.size() <= node_r) {
-      return IPixelGrid::emptyPixel();
-    }
-    if (_bearingNodes.size() <= node_phi) {
-      return IPixelGrid::emptyPixel();
-    }
-    return _pixelMap.at(node_r).at(node_phi);
-  }
+  const std::vector<std::size_t> &
+  nodeToPixel(std::size_t node_r, std::size_t node_phi) const;
 
-  inline const std::vector<std::size_t> &
-  nodeToPixel(std::size_t node_index) const {
-    const std::size_t node_r{node_index / _bearingNodes.size()};
-    const std::size_t node_phi{node_index % _bearingNodes.size()};
-    return nodeToPixel(node_r, node_phi);
-  }
+  const std::vector<std::size_t> &
+  nodeToPixel(std::size_t node_index) const;
 
   // Helpers
   // ---------------------------------------------------------------------------
