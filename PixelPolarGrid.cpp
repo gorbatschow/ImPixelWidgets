@@ -76,9 +76,7 @@ bool PixelPolarGrid::polarContains(double r, double phi) const {
   return _config.containsDistance(r) && _config.containsBearing(phi);
 }
 
-std::size_t PixelPolarGrid::pixelWidth() const {
-  return _config.pixelWidth();
-}
+std::size_t PixelPolarGrid::pixelWidth() const { return _config.pixelWidth(); }
 
 std::size_t PixelPolarGrid::pixelHeight() const {
   return _config.pixelHeight();
@@ -87,7 +85,7 @@ std::size_t PixelPolarGrid::pixelHeight() const {
 bool PixelPolarGrid::distanceBounds(double r, double &min, double &max) const {
   if (containsDistance(r)) {
     min = _distanceNodes.at(distanceToNode(r));
-    max = min + _config.distanceStep();
+    max = std::min(min + _config.distanceStep(), _config.distanceMax());
     return true;
   }
   return false;
@@ -96,7 +94,7 @@ bool PixelPolarGrid::distanceBounds(double r, double &min, double &max) const {
 bool PixelPolarGrid::bearingBounds(double phi, double &min, double &max) const {
   if (containsBearing(phi)) {
     min = _bearingNodes.at(bearingToNode(phi));
-    max = min + _config.bearingStep();
+    max = std::min(min + _config.bearingStep(), _config.bearingMax());
     return true;
   }
   return false;
