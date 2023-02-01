@@ -80,11 +80,10 @@ public:
 
   // Node Pixel Conversion
   // ---------------------------------------------------------------------------
-  const std::vector<std::size_t> &
-  nodeToPixel(std::size_t node_r, std::size_t node_phi) const;
+  const std::vector<std::size_t> &nodeToPixel(std::size_t node_r,
+                                              std::size_t node_phi) const;
 
-  const std::vector<std::size_t> &
-  nodeToPixel(std::size_t node_index) const;
+  const std::vector<std::size_t> &nodeToPixel(std::size_t node_index) const;
 
   // Helpers
   // ---------------------------------------------------------------------------

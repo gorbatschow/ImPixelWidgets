@@ -44,5 +44,7 @@ void RadarWidget::setPixelSubGrid(std::shared_ptr<IPixelGrid> subgrid) {
   _pixelSubGrid.swap(subgrid);
   _xSubGridNodes.clear();
   _ySubGridNodes.clear();
-  _pixelSubGrid->makeCartesianMesh(_xSubGridNodes, _ySubGridNodes);
+  if (_pixelSubGrid) {
+    _pixelSubGrid->makeCartesianMesh(_xSubGridNodes, _ySubGridNodes);
+  }
 }
