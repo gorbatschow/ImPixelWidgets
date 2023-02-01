@@ -23,7 +23,8 @@ PixelPolarGrid::cartesianToPixel(double x, double y) const {
 bool PixelPolarGrid::sectorToPixel(
     double r, double phi_min, double phi_max,
     std::vector<std::vector<std::size_t>> &pixel_list) const {
-  if (polarContains(r, phi_min) && polarContains(r, phi_max)) {
+  if (polarContains(r, phi_min)) {
+    phi_max = std::min(phi_max, _config.bearingMax());
     while (phi_min < phi_max) {
       const auto &pixel{polarToPixel(r, phi_min)};
       if (!pixel.empty()) {
