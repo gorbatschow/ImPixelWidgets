@@ -11,6 +11,9 @@ PixelData::PixelData() {
 PixelData::~PixelData() { unloadTexture(); }
 
 void PixelData::resize(std::size_t w, std::size_t h) {
+  if (_width == w && _height == h) {
+    return;
+  }
   _width = w;
   _height = h;
   _blob.resize(_width * _height * ColorRGBA::Size(), 0);

@@ -44,7 +44,9 @@ public:
                              std::vector<double> &phi) const override;
 
   // Grid Size
-  virtual std::size_t gridSize() const override { return _gridSize; }
+  virtual std::size_t gridSize(std::size_t dim = 0) const override {
+    return _gridSize;
+  }
 
   // Pixel Width
   virtual std::size_t pixelWidth() const override {

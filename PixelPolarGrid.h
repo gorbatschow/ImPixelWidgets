@@ -1,6 +1,7 @@
 #pragma once
 #include "IPixelGrid.h"
 #include "PolarGridConfig.h"
+#include <array>
 #include <cassert>
 #include <cmath>
 #include <numeric>
@@ -13,9 +14,25 @@ public:
 
   // Interface
   // ---------------------------------------------------------------------------
+  // Linear Node To Pixel
+  virtual const std::vector<std::size_t> &
+  nodeToPixel(std::size_t dim_0) const override;
+
+  // Node To Pixel
+  virtual const std::vector<std::size_t> &
+  nodeToPixel(std::size_t dim_1, std::size_t dim_2) const override;
+
   // Polar To Pixel
   virtual const std::vector<std::size_t> &
   polarToPixel(double r, double phi) const override;
+
+  // Polar To Linear Node
+  virtual void polarToNode(double r, double phi,
+                           std::size_t &dim_0) const override;
+
+  // Polar To Node
+  virtual void polarToNode(double r, double phi, std::size_t &dim_1,
+                           std::size_t &dim_2) const override;
 
   // Cartesian To Pixel
   virtual const std::vector<std::size_t> &
@@ -41,7 +58,7 @@ public:
                              std::vector<double> &phi) const override;
 
   // Grid Size
-  virtual std::size_t gridSize() const override;
+  virtual std::size_t gridSize(std::size_t dim = 0) const override;
 
   // Polar Contains
   virtual bool polarContains(double r, double phi) const override;
@@ -80,13 +97,6 @@ public:
     return _bearingNodes;
   }
 
-  // Node Pixel Conversion
-  // ---------------------------------------------------------------------------
-  const std::vector<std::size_t> &nodeToPixel(std::size_t node_r,
-                                              std::size_t node_phi) const;
-
-  const std::vector<std::size_t> &nodeToPixel(std::size_t node_index) const;
-
   // Helpers
   // ---------------------------------------------------------------------------
   inline double sind(double v) const {
@@ -114,12 +124,6 @@ public:
                360.);
   }
 
-  inline void polarToNode(double r, double phi, std::size_t &node_r,
-                          std::size_t &node_phi) const {
-    node_r = distanceToNode(r);
-    node_phi = bearingToNode(phi);
-  }
-
   inline std::size_t distanceToNode(double r) const {
     return std::floor((r - _config.distanceMin()) / _config.distanceStep());
   }
@@ -143,6 +147,7 @@ public:
 private:
   void updateDistanceNodes();
   void updateBearingNodes();
+  void updateNodesIndex();
   void bindNodesToPixels();
 
   // Config
@@ -151,6 +156,10 @@ private:
   // Nodes
   std::vector<double> _distanceNodes{};
   std::vector<double> _bearingNodes{};
+
+  // Nodes indexing
+  std::vector<std::vector<std::size_t>> _linearNodesIndex{};
+  std::vector<std::array<std::size_t, 3>> _dimNodesIndex{};
 
   // Map nodes to pixels
   std::vector<std::vector<std::vector<std::size_t>>> _pixelMap;

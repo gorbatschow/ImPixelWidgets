@@ -7,17 +7,42 @@ class IPixelGrid {
 public:
   virtual ~IPixelGrid() = default;
 
+  // Linear Node To Pixel
+  virtual const std::vector<std::size_t> &nodeToPixel(std::size_t dim_0) const {
+    return _emptyPixel;
+  };
+
+  // Node To Pixel
+  virtual const std::vector<std::size_t> &nodeToPixel(std::size_t dim_1,
+                                                      std::size_t dim_2) const {
+    return _emptyPixel;
+  };
+
   // Polar To Pixel
   virtual const std::vector<std::size_t> &polarToPixel(double r,
                                                        double phi) const {
     return _emptyPixel;
   };
 
+  // Polar To Linear Node
+  virtual void polarToNode(double r, double phi, std::size_t &dim_0) const {}
+
+  // Polar To Node
+  virtual void polarToNode(double r, double phi, std::size_t &dim_1,
+                           std::size_t &dim_2) const {}
+
   // Cartesian To Pixel
   virtual const std::vector<std::size_t> &cartesianToPixel(double x,
                                                            double y) const {
     return _emptyPixel;
   };
+
+  // Cartesian To Linear Node
+  virtual void cartesianToNode(double x, double y, std::size_t &dim_0) const {}
+
+  // Cartesian To Node
+  virtual void cartesianToNode(double x, double y, std::size_t &dim_1,
+                               std::size_t &dim_2) const {}
 
   // Sector To Pixel
   virtual bool
@@ -41,7 +66,7 @@ public:
                              std::vector<double> &phi) const {}
 
   // Grid Size
-  virtual std::size_t gridSize() const { return 0; }
+  virtual std::size_t gridSize(std::size_t dim = 0) const { return 0; }
 
   // Polar Contains
   virtual bool polarContains(double r, double phi) const { return false; }
