@@ -9,6 +9,7 @@ set(IMPIXELWIDGETS_SOURCES
     RadarWidget.cpp
     ColorSchemeTurbo.cpp
     PixelData.cpp
+    PixelGridData.cpp
     PixelPolarGrid.cpp
     PixelMultiPolarGrid.cpp
 )
