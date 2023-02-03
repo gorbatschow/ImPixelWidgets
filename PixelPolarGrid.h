@@ -19,7 +19,7 @@ public:
   indexToPixel(std::size_t index) const override;
 
   // Node
-  //----------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   // to Pixel
   virtual const std::vector<std::size_t> &
   nodeToPixel(std::size_t dim_1, std::size_t dim_2) const override;
@@ -28,7 +28,7 @@ public:
   virtual std::size_t gridSize(std::size_t dim = 0) const override;
 
   // Pixel
-  //----------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   // Pixel Width
   virtual std::size_t pixelWidth() const override;
 
@@ -36,7 +36,7 @@ public:
   virtual std::size_t pixelHeight() const override;
 
   // Polar
-  //----------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   // to Pixel
   virtual const std::vector<std::size_t> &
   polarToPixel(double r, double phi) const override;
@@ -78,7 +78,7 @@ public:
                              std::vector<double> &phi) const override;
 
   // Cartesian
-  //----------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   virtual const std::vector<std::size_t> &
   cartesianToPixel(double x, double y) const override;
 

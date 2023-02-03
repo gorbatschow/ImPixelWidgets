@@ -25,6 +25,28 @@ PixelMultiPolarGrid::cartesianToPixel(double x, double y) const {
   return IPixelGrid::emptyPixel();
 }
 
+ImVec2 PixelMultiPolarGrid::cartesianBoundsMin() const {
+  return {float(-distanceRange()), float(-distanceRange())};
+}
+
+ImVec2 PixelMultiPolarGrid::cartesianBoundsMax() const {
+  return {float(+distanceRange()), float(+distanceRange())};
+}
+
+std::size_t PixelMultiPolarGrid::pixelWidth() const {
+  if (_gridList.empty()) {
+    return 0;
+  }
+  return _gridList.front()->config().pixelWidth();
+}
+
+std::size_t PixelMultiPolarGrid::pixelHeight() const {
+  if (_gridList.empty()) {
+    return 0;
+  }
+  return _gridList.front()->config().pixelHeight();
+}
+
 bool PixelMultiPolarGrid::sectorToPixel(
     double r, double phi_min, double phi_max,
     std::vector<std::vector<std::size_t>> &pixel_list) const {

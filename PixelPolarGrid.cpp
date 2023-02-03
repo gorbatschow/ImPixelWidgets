@@ -157,7 +157,7 @@ std::size_t PixelPolarGrid::gridSize(std::size_t dim) const {
   return _distanceNodes.size() * _bearingNodes.size();
 }
 
-//
+// Config
 //----------------------------------------------------------------------------
 void PixelPolarGrid::setConfig(const PolarGridConfig &config) {
   _config = config;
@@ -166,6 +166,9 @@ void PixelPolarGrid::setConfig(const PolarGridConfig &config) {
   updateNodesIndex();
   bindNodesToPixels();
 }
+
+//
+// ---------------------------------------------------------------------------
 
 void PixelPolarGrid::updateDistanceNodes() {
   _distanceNodes.clear();
