@@ -12,36 +12,75 @@ public:
   PixelPolarGrid(const PolarGridConfig &config = PolarGridConfig());
   virtual ~PixelPolarGrid() override = default;
 
-  // Interface
+  // Index
   // ---------------------------------------------------------------------------
-  // Linear Node To Pixel
+  // Index To Pixel
   virtual const std::vector<std::size_t> &
-  nodeToPixel(std::size_t dim_0) const override;
+  indexToPixel(std::size_t index) const override;
 
-  // Node To Pixel
+  // Node
+  //----------------------------------------------------------------------------
+  // to Pixel
   virtual const std::vector<std::size_t> &
   nodeToPixel(std::size_t dim_1, std::size_t dim_2) const override;
 
-  // Polar To Pixel
+  // Grid Size
+  virtual std::size_t gridSize(std::size_t dim = 0) const override;
+
+  // Pixel
+  //----------------------------------------------------------------------------
+  // Pixel Width
+  virtual std::size_t pixelWidth() const override;
+
+  // Pixel Height
+  virtual std::size_t pixelHeight() const override;
+
+  // Polar
+  //----------------------------------------------------------------------------
+  // to Pixel
   virtual const std::vector<std::size_t> &
   polarToPixel(double r, double phi) const override;
-
-  // Polar To Linear Node
-  virtual void polarToNode(double r, double phi,
-                           std::size_t &dim_0) const override;
-
-  // Polar To Node
-  virtual void polarToNode(double r, double phi, std::size_t &dim_1,
-                           std::size_t &dim_2) const override;
-
-  // Cartesian To Pixel
-  virtual const std::vector<std::size_t> &
-  cartesianToPixel(double x, double y) const override;
 
   // Sector To Pixel
   virtual bool sectorToPixel(
       double r, double phi_min, double phi_max,
       std::vector<std::vector<std::size_t>> &pixel_list) const override;
+
+  // to Index
+  virtual void polarToIndex(double r, double phi,
+                            std::size_t &index) const override;
+
+  // Polar To Node
+  virtual void polarToNode(double r, double phi, std::size_t &dim_1,
+                           std::size_t &dim_2) const override;
+
+  // Distance Nodes
+  virtual const std::vector<double> &
+  distanceNodes(double distance = 0) const override;
+
+  // Bearing Nodes
+  virtual const std::vector<double> &
+  bearingNodes(double distnace = 0) const override;
+
+  // Distance Bounds
+  virtual bool distanceBounds(double r, double &min,
+                              double &max) const override;
+
+  // Bearing Bounds
+  virtual bool bearingBounds(double phi, double &min,
+                             double &max) const override;
+
+  // Polar Contains
+  virtual bool polarContains(double r, double phi) const override;
+
+  // Make Polar Mesh
+  virtual void makePolarMesh(std::vector<double> &r,
+                             std::vector<double> &phi) const override;
+
+  // Cartesian
+  //----------------------------------------------------------------------------
+  virtual const std::vector<std::size_t> &
+  cartesianToPixel(double x, double y) const override;
 
   // Cartesian Bounds Min
   virtual ImVec2 cartesianBoundsMin() const override;
@@ -53,49 +92,15 @@ public:
   virtual void makeCartesianMesh(std::vector<double> &x,
                                  std::vector<double> &y) const override;
 
-  // Make Polar Mesh
-  virtual void makePolarMesh(std::vector<double> &r,
-                             std::vector<double> &phi) const override;
-
-  // Grid Size
-  virtual std::size_t gridSize(std::size_t dim = 0) const override;
-
-  // Polar Contains
-  virtual bool polarContains(double r, double phi) const override;
-
   // Cartesian Contains
   virtual bool cartesianContains(double x, double y) const override {
     return false;
   }
 
-  // Pixel Size
-  virtual std::size_t pixelWidth() const override;
-  virtual std::size_t pixelHeight() const override;
-
-  // Distance Bounds
-  virtual bool distanceBounds(double r, double &min,
-                              double &max) const override;
-
-  // Bearing Bounds
-  virtual bool bearingBounds(double phi, double &min,
-                             double &max) const override;
-
   // Config
   // ---------------------------------------------------------------------------
   void setConfig(const PolarGridConfig &config);
   inline const PolarGridConfig &config() const { return _config; }
-
-  // Polar Nodes
-  // ---------------------------------------------------------------------------
-  inline const std::vector<double> &
-  distanceNodes(double distance = 0) const override {
-    return _distanceNodes;
-  }
-
-  inline const std::vector<double> &
-  bearingNodes(double distnace = 0) const override {
-    return _bearingNodes;
-  }
 
   // Helpers
   // ---------------------------------------------------------------------------

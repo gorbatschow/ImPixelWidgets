@@ -4,6 +4,15 @@ PixelPolarGrid::PixelPolarGrid(const PolarGridConfig &config) {
   setConfig(config);
 }
 
+// Index
+// -----------------------------------------------------------------------------
+const std::vector<std::size_t> &
+PixelPolarGrid::indexToPixel(std::size_t index) const {
+  return nodeToPixel(_dimNodesIndex[index][1], _dimNodesIndex[index][2]);
+}
+
+// Node
+//------------------------------------------------------------------------------
 const std::vector<std::size_t> &
 PixelPolarGrid::nodeToPixel(std::size_t node_r, std::size_t node_phi) const {
   if (_distanceNodes.size() <= node_r) {
@@ -15,38 +24,21 @@ PixelPolarGrid::nodeToPixel(std::size_t node_r, std::size_t node_phi) const {
   return _pixelMap.at(node_r).at(node_phi);
 }
 
-const std::vector<std::size_t> &
-PixelPolarGrid::nodeToPixel(std::size_t dim_0) const {
-  return nodeToPixel(_dimNodesIndex[dim_0][1], _dimNodesIndex[dim_0][2]);
+// Pixel
+//------------------------------------------------------------------------------
+std::size_t PixelPolarGrid::pixelWidth() const { return _config.pixelWidth(); }
+
+std::size_t PixelPolarGrid::pixelHeight() const {
+  return _config.pixelHeight();
 }
 
+// Polar
+//------------------------------------------------------------------------------
 const std::vector<std::size_t> &PixelPolarGrid::polarToPixel(double r,
                                                              double phi) const {
   std::size_t node_r{}, node_phi{};
   polarToNode(r, phi, node_r, node_phi);
   return nodeToPixel(node_r, node_phi);
-}
-
-void PixelPolarGrid::polarToNode(double r, double phi,
-                                 std::size_t &dim_0) const {
-  const std::size_t dim_1{distanceToNode(r)};
-  const std::size_t dim_2{bearingToNode(phi)};
-  dim_0 = _linearNodesIndex[dim_1][dim_2];
-}
-
-void PixelPolarGrid::polarToNode(double r, double phi, std::size_t &dim_1,
-                                 std::size_t &dim_2) const {
-  dim_1 = distanceToNode(r);
-  dim_2 = bearingToNode(phi);
-}
-
-const std::vector<std::size_t> &
-PixelPolarGrid::cartesianToPixel(double x, double y) const {
-  double r{}, phi{};
-  cartesianToPolar(x, y, r, phi);
-  r = roundValue(r, _cartToPixelDecimals);
-  phi = roundValue(phi, _cartToPixelDecimals);
-  return polarToPixel(r, phi);
 }
 
 bool PixelPolarGrid::sectorToPixel(
@@ -64,6 +56,74 @@ bool PixelPolarGrid::sectorToPixel(
     return true;
   }
   return false;
+}
+
+void PixelPolarGrid::polarToIndex(double r, double phi,
+                                  std::size_t &index) const {
+  const std::size_t dim_1{distanceToNode(r)};
+  const std::size_t dim_2{bearingToNode(phi)};
+  index = _linearNodesIndex[dim_1][dim_2];
+}
+
+void PixelPolarGrid::polarToNode(double r, double phi, std::size_t &dim_1,
+                                 std::size_t &dim_2) const {
+  dim_1 = distanceToNode(r);
+  dim_2 = bearingToNode(phi);
+}
+
+bool PixelPolarGrid::distanceBounds(double r, double &min, double &max) const {
+  if (containsDistance(r)) {
+    min = _distanceNodes.at(distanceToNode(r));
+    max = std::min(min + _config.distanceStep(), _config.distanceMax());
+    return true;
+  }
+  return false;
+}
+
+bool PixelPolarGrid::bearingBounds(double phi, double &min, double &max) const {
+  if (containsBearing(phi)) {
+    min = _bearingNodes.at(bearingToNode(phi));
+    max = std::min(min + _config.bearingStep(), _config.bearingMax());
+    return true;
+  }
+  return false;
+}
+
+const std::vector<double> &
+PixelPolarGrid::distanceNodes(double distance) const {
+  return _distanceNodes;
+}
+
+const std::vector<double> &PixelPolarGrid::bearingNodes(double distnace) const {
+  return _bearingNodes;
+}
+
+bool PixelPolarGrid::polarContains(double r, double phi) const {
+  return _config.containsDistance(r) && _config.containsBearing(phi);
+}
+
+void PixelPolarGrid::makePolarMesh(std::vector<double> &r,
+                                   std::vector<double> &phi) const {
+
+  r.reserve(gridSize());
+  phi.reserve(gridSize());
+  for (const auto &r_k : _distanceNodes) {
+    for (const auto &phi_k : _bearingNodes) {
+      r.push_back(r_k);
+      phi.push_back(phi_k);
+    }
+  }
+}
+
+// Cartesian
+//----------------------------------------------------------------------------
+const std::vector<std::size_t> &
+PixelPolarGrid::cartesianToPixel(double x, double y) const {
+  double r{}, phi{};
+  cartesianToPolar(x, y, r, phi);
+  r = roundValue(r, _cartToPixelDecimals);
+  phi = roundValue(phi, _cartToPixelDecimals);
+  return polarToPixel(r, phi);
 }
 
 ImVec2 PixelPolarGrid::cartesianBoundsMin() const {
@@ -88,19 +148,6 @@ void PixelPolarGrid::makeCartesianMesh(std::vector<double> &x,
   }
 }
 
-void PixelPolarGrid::makePolarMesh(std::vector<double> &r,
-                                   std::vector<double> &phi) const {
-
-  r.reserve(gridSize());
-  phi.reserve(gridSize());
-  for (const auto &r_k : _distanceNodes) {
-    for (const auto &phi_k : _bearingNodes) {
-      r.push_back(r_k);
-      phi.push_back(phi_k);
-    }
-  }
-}
-
 std::size_t PixelPolarGrid::gridSize(std::size_t dim) const {
   if (dim == 1) {
     return _distanceNodes.size();
@@ -110,34 +157,8 @@ std::size_t PixelPolarGrid::gridSize(std::size_t dim) const {
   return _distanceNodes.size() * _bearingNodes.size();
 }
 
-bool PixelPolarGrid::polarContains(double r, double phi) const {
-  return _config.containsDistance(r) && _config.containsBearing(phi);
-}
-
-std::size_t PixelPolarGrid::pixelWidth() const { return _config.pixelWidth(); }
-
-std::size_t PixelPolarGrid::pixelHeight() const {
-  return _config.pixelHeight();
-}
-
-bool PixelPolarGrid::distanceBounds(double r, double &min, double &max) const {
-  if (containsDistance(r)) {
-    min = _distanceNodes.at(distanceToNode(r));
-    max = std::min(min + _config.distanceStep(), _config.distanceMax());
-    return true;
-  }
-  return false;
-}
-
-bool PixelPolarGrid::bearingBounds(double phi, double &min, double &max) const {
-  if (containsBearing(phi)) {
-    min = _bearingNodes.at(bearingToNode(phi));
-    max = std::min(min + _config.bearingStep(), _config.bearingMax());
-    return true;
-  }
-  return false;
-}
-
+//
+//----------------------------------------------------------------------------
 void PixelPolarGrid::setConfig(const PolarGridConfig &config) {
   _config = config;
   updateDistanceNodes();
