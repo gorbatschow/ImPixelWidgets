@@ -1,7 +1,7 @@
 #pragma once
 #include "ColorScheme.h"
-#include "PixelData.h"
 #include "PixelGridData.h"
+#include "PixelImage.h"
 #include <implot.h>
 #include <memory>
 
@@ -52,7 +52,7 @@ public:
   }
 
   // Get Image
-  const PixelData &image() const { return _pixelData; }
+  const PixelImage &image() const { return _pixelData; }
 
   // Display Scatter
   inline void setDisplayScatter(bool display) { _displayScatter = display; }
@@ -61,7 +61,7 @@ public:
 private:
   ImVec2 _boundsMin;
   ImVec2 _boundsMax;
-  PixelData _pixelData;
+  PixelImage _pixelData;
   std::vector<double> _xGridNodes, _yGridNodes;
   std::unique_ptr<ColorScheme> _colorScheme{new ColorSchemeMono};
   bool _displayScatter{false};

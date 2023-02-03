@@ -6,13 +6,13 @@
 #include <string>
 #include <vector>
 
-class PixelData {
+class PixelImage {
 public:
   // Constructor
-  PixelData();
+  PixelImage();
 
   // Destructor
-  ~PixelData();
+  ~PixelImage();
 
   // Resize
   void resize(std::size_t w, std::size_t h);

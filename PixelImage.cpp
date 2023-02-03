@@ -1,16 +1,16 @@
-#include "PixelData.h"
+#include "PixelImage.h"
 #include <cstring>
 #include <fstream>
 
-PixelData::PixelData() {
+PixelImage::PixelImage() {
   resize(4, 4);
   fill(ColorRGBA::Aqua());
   loadTexture();
 }
 
-PixelData::~PixelData() { unloadTexture(); }
+PixelImage::~PixelImage() { unloadTexture(); }
 
-void PixelData::resize(std::size_t w, std::size_t h) {
+void PixelImage::resize(std::size_t w, std::size_t h) {
   if (_width == w && _height == h) {
     return;
   }
@@ -20,7 +20,7 @@ void PixelData::resize(std::size_t w, std::size_t h) {
   _blob.shrink_to_fit();
 }
 
-void PixelData::loadTexture() {
+void PixelImage::loadTexture() {
   unloadTexture();
   glGenTextures(1, &_id);
   glBindTexture(GL_TEXTURE_2D, _id);
@@ -31,27 +31,27 @@ void PixelData::loadTexture() {
                GL_UNSIGNED_BYTE, _blob.data());
 }
 
-void PixelData::unloadTexture() {
+void PixelImage::unloadTexture() {
   if (_id) {
     glDeleteTextures(1, &_id);
     _id = {};
   }
 }
 
-void PixelData::clear() { memset(_blob.data(), {}, _blob.size()); }
+void PixelImage::clear() { memset(_blob.data(), {}, _blob.size()); }
 
-void PixelData::clear(const std::vector<std::size_t> &pixel) {
+void PixelImage::clear(const std::vector<std::size_t> &pixel) {
   fill(pixel, ColorRGBA::Transparent());
 }
 
-void PixelData::fill(const ColorRGBA &rgba) {
+void PixelImage::fill(const ColorRGBA &rgba) {
   for (std::size_t i = 0; i != _blob.size(); i = i + ColorRGBA::Size()) {
     rgba.fill(&_blob[i]);
   }
 }
 
-void PixelData::fill(const std::vector<std::size_t> &pixel,
-                     const ColorRGBA &rgba) {
+void PixelImage::fill(const std::vector<std::size_t> &pixel,
+                      const ColorRGBA &rgba) {
   std::size_t i{};
   for (const auto &ind : pixel) {
     i = ind * ColorRGBA::Size();
@@ -59,12 +59,12 @@ void PixelData::fill(const std::vector<std::size_t> &pixel,
   }
 }
 
-ColorRGBA PixelData::colorAt(std::size_t pixel) const {
+ColorRGBA PixelImage::colorAt(std::size_t pixel) const {
   pixel *= ColorRGBA::Size();
   return ColorRGBA(&_blob[pixel]);
 }
 
-bool PixelData::savePixelData(const std::string &fname) const {
+bool PixelImage::savePixelData(const std::string &fname) const {
 
   std::ofstream stream(fname.c_str(), std::fstream::out | std::fstream::binary);
   if (stream) {
