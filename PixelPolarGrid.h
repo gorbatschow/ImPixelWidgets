@@ -112,10 +112,6 @@ public:
     return std::floor((phi - _config.bearingMin()) / _config.bearingStep());
   }
 
-  inline double roundValue(double value, double decimals) const {
-    return std::ceil(value * decimals) / decimals;
-  }
-
   inline bool containsDistance(double r) const {
     return _config.containsDistance(r);
   }
@@ -145,6 +141,5 @@ private:
   std::vector<std::vector<std::vector<std::size_t>>> _pixelMap;
 
   // Base Rotation
-  const double _baseRotation{-90.f};
   const double _cartToPixelDecimals{1e3};
 };

@@ -122,8 +122,8 @@ const std::vector<std::size_t> &
 PixelPolarGrid::cartesianToPixel(double x, double y) const {
   double r{}, phi{};
   CS::cartesianToPolar(r, phi, x, y, _config.rotation());
-  r = roundValue(r, _cartToPixelDecimals);
-  phi = roundValue(phi, _cartToPixelDecimals);
+  r = CS::round(r, _cartToPixelDecimals);
+  phi = CS::round(phi, _cartToPixelDecimals);
   return polarToPixel(r, phi);
 }
 
