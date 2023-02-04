@@ -6,32 +6,35 @@
 #include <string>
 #include <vector>
 
-class PixelData {
+class PixelImage {
 public:
   // Constructor
-  PixelData();
+  PixelImage();
 
   // Destructor
-  ~PixelData();
+  ~PixelImage();
 
   // Resize
   void resize(std::size_t w, std::size_t h);
 
-  // Load Texture
-  void loadTexture();
+  // Render
+  void render();
 
-  // Unload Texture
-  void unloadTexture();
-
-  // Clear
+  // Clear All
   void clear();
 
-  // Fill
+  // Clear Pixel
+  void clear(const std::vector<std::size_t> &pixel);
+
+  // Fill All
   void fill(const ColorRGBA &rgba = ColorRGBA::Aqua());
 
-  // Fill
-  void fill(const std::vector<std::size_t> &indexes,
+  // Fill Pixel
+  void fill(const std::vector<std::size_t> &pixel,
             const ColorRGBA &rgba = ColorRGBA::Lime());
+
+  // Get Color
+  ColorRGBA colorAt(std::size_t pixel) const;
 
   // ID
   inline GLuint glID() const { return _id; }
@@ -48,4 +51,10 @@ private:
   std::size_t _height{};
   std::vector<uint8_t> _blob;
   GLuint _id{};
+
+  // Load Texture
+  void loadTexture();
+
+  // Unload Texture
+  void unloadTexture();
 };

@@ -8,7 +8,8 @@ set(CXX_CMAKE_STANDARD_REQUIRED ON)
 set(IMPIXELWIDGETS_SOURCES
     RadarWidget.cpp
     ColorSchemeTurbo.cpp
-    PixelData.cpp
+    PixelImage.cpp
+    PixelGridData.cpp
     PixelPolarGrid.cpp
     PixelMultiPolarGrid.cpp
 )
