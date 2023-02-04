@@ -9,10 +9,13 @@ struct ColorScheme {
   virtual ~ColorScheme() = default;
 
   inline ColorRGBA valueToColor(double value, double alpha = 1.0) const {
-    value = std::clamp(value, valueMin, valueMax);
-    value = value / valueMax * ColorRGBA::Max();
-    return {red(uint8_t(value)), green(uint8_t(value)), blue(uint8_t(value)),
-            uint8_t(alpha * ColorRGBA::Max())};
+    if (value >= valueMin) {
+      value = std::min(value, valueMax);
+      value = value / valueMax * ColorRGBA::Max();
+      return {red(uint8_t(value)), green(uint8_t(value)), blue(uint8_t(value)),
+              uint8_t(alpha * ColorRGBA::Max())};
+    };
+    return {0, 0, 0, 0};
   }
 
   virtual uint8_t red(uint8_t value) const = 0;
