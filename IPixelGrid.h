@@ -162,14 +162,10 @@ public:
 
 protected:
   inline const std::vector<std::size_t> &emptyPixel() const {
-    throw NotImplementedException(__func__);
     return _emptyPixel;
   }
 
-  inline const std::vector<double> &emptyNodes() const {
-    throw NotImplementedException(__func__);
-    return _emptyNodes;
-  }
+  inline const std::vector<double> &emptyNodes() const { return _emptyNodes; }
 
 private:
   const std::vector<std::size_t> _emptyPixel{};
