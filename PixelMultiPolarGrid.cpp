@@ -62,22 +62,22 @@ std::size_t PixelMultiPolarGrid::pixelHeight() const {
 }
 
 bool PixelMultiPolarGrid::sectorToPixel(
-    double r, double phi_min, double phi_max,
-    std::vector<std::vector<std::size_t>> &pixel_list) const {
+    std::vector<std::vector<std::size_t>> &pixel_list, double r, double phi_min,
+    double phi_max) const {
 
   for (const auto &grid : _gridList) {
-    if (grid->sectorToPixel(r, phi_min, phi_max, pixel_list)) {
+    if (grid->sectorToPixel(pixel_list, r, phi_min, phi_max)) {
       return true;
     }
   }
   return false;
 }
 
-void PixelMultiPolarGrid::polarToIndex(double r, double phi,
-                                       std::size_t &index) const {
+void PixelMultiPolarGrid::polarToIndex(std::size_t &index, double r,
+                                       double phi) const {
   for (std::size_t i{}; const auto &grid : _gridList) {
     if (grid->polarContains(r, phi)) {
-      grid->polarToIndex(r, phi, index);
+      grid->polarToIndex(index, r, phi);
       index += i;
       return;
     }
@@ -117,8 +117,8 @@ bool PixelMultiPolarGrid::cartesianContains(double x, double y) const {
   return false;
 }
 
-bool PixelMultiPolarGrid::distanceBounds(double r, double &min,
-                                         double &max) const {
+bool PixelMultiPolarGrid::distanceBounds(double &min, double &max,
+                                         double r) const {
   for (const auto &grid : _gridList) {
     if (grid->distanceBounds(r, min, max)) {
       return true;
@@ -127,8 +127,8 @@ bool PixelMultiPolarGrid::distanceBounds(double r, double &min,
   return false;
 }
 
-bool PixelMultiPolarGrid::bearingBounds(double phi, double &min,
-                                        double &max) const {
+bool PixelMultiPolarGrid::bearingBounds(double &min, double &max,
+                                        double phi) const {
   for (const auto &grid : _gridList) {
     if (grid->bearingBounds(phi, min, max)) {
       return true;

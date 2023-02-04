@@ -13,7 +13,7 @@ PixelPolarGrid::indexToPixel(std::size_t index) const {
 }
 
 bool PixelPolarGrid::indexToNode(std::size_t &dim_1, std::size_t &dim_2,
-                                 std::size_t &index) const {
+                                 std::size_t index) const {
   if (_dimNodesIndex.size() <= index) {
     return false;
   }
@@ -60,13 +60,13 @@ std::size_t PixelPolarGrid::pixelHeight() const {
 const std::vector<std::size_t> &PixelPolarGrid::polarToPixel(double r,
                                                              double phi) const {
   std::size_t node_r{}, node_phi{};
-  polarToNode(r, phi, node_r, node_phi);
+  polarToNode(node_r, node_phi, r, phi);
   return nodeToPixel(node_r, node_phi);
 }
 
 bool PixelPolarGrid::sectorToPixel(
-    double r, double phi_min, double phi_max,
-    std::vector<std::vector<std::size_t>> &pixel_list) const {
+    std::vector<std::vector<std::size_t>> &pixel_list, double r, double phi_min,
+    double phi_max) const {
   if (polarContains(r, phi_min)) {
     phi_max = std::min(phi_max, _config.bearingMax());
     while (phi_min < phi_max) {
@@ -81,20 +81,20 @@ bool PixelPolarGrid::sectorToPixel(
   return false;
 }
 
-void PixelPolarGrid::polarToIndex(double r, double phi,
-                                  std::size_t &index) const {
+void PixelPolarGrid::polarToIndex(std::size_t &index, double r,
+                                  double phi) const {
   const std::size_t dim_1{distanceToNode(r)};
   const std::size_t dim_2{bearingToNode(phi)};
   index = _flatNodesIndex[dim_1][dim_2];
 }
 
-void PixelPolarGrid::polarToNode(double r, double phi, std::size_t &dim_1,
-                                 std::size_t &dim_2) const {
+void PixelPolarGrid::polarToNode(std::size_t &dim_1, std::size_t &dim_2,
+                                 double r, double phi) const {
   dim_1 = distanceToNode(r);
   dim_2 = bearingToNode(phi);
 }
 
-bool PixelPolarGrid::distanceBounds(double r, double &min, double &max) const {
+bool PixelPolarGrid::distanceBounds(double &min, double &max, double r) const {
   if (containsDistance(r)) {
     min = _distanceNodes.at(distanceToNode(r));
     max = std::min(min + _config.distanceStep(), _config.distanceMax());
@@ -103,7 +103,7 @@ bool PixelPolarGrid::distanceBounds(double r, double &min, double &max) const {
   return false;
 }
 
-bool PixelPolarGrid::bearingBounds(double phi, double &min, double &max) const {
+bool PixelPolarGrid::bearingBounds(double &min, double &max, double phi) const {
   if (containsBearing(phi)) {
     min = _bearingNodes.at(bearingToNode(phi));
     max = std::min(min + _config.bearingStep(), _config.bearingMax());
@@ -249,7 +249,7 @@ void PixelPolarGrid::bindNodesToPixels() {
   for (std::size_t i{}, k{}; i != _config.pixelHeight(); ++i) {
     for (std::size_t j{}; j != _config.pixelWidth(); ++j, ++k) {
       CS::cartesianToPolar(r, phi, x, y, _config.rotation());
-      PixelPolarGrid::polarToNode(r, phi, node_r, node_phi);
+      PixelPolarGrid::polarToNode(node_r, node_phi, r, phi);
       x += dx;
       if (_pixelMap.size() <= node_r || r >= _config.distanceMax()) {
         continue;

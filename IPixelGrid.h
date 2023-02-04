@@ -23,9 +23,9 @@ public:
     } else if constexpr (T_cs == CS::System::Node) {
       nodeToIndex(index, dim_1, dim_2);
     } else if constexpr (T_cs == CS::System::Cartesian) {
-      cartesianToIndex(dim_1, dim_2, index);
+      cartesianToIndex(index, dim_1, dim_2);
     } else if constexpr (T_cs == CS::System::Polar) {
-      polarToIndex(dim_1, dim_2, index);
+      polarToIndex(index, dim_1, dim_2);
     } else if constexpr (T_cs == CS::System::Biangular) {
     }
   }
@@ -41,7 +41,7 @@ public:
 
   // toNode
   virtual bool indexToNode(std::size_t &dim_1, std::size_t &dim_2,
-                           std::size_t &index) const {
+                           std::size_t index) const {
     throw NotImplementedException(__func__);
   }
 
@@ -96,21 +96,20 @@ public:
   };
 
   // Sector to Pixel
-  virtual bool
-  sectorToPixel(double r, double phi_min, double phi_max,
-                std::vector<std::vector<std::size_t>> &pixel_list) const {
+  virtual bool sectorToPixel(std::vector<std::vector<std::size_t>> &pixel_list,
+                             double r, double phi_min, double phi_max) const {
     throw NotImplementedException(__func__);
     return false;
   }
 
   // to Index
-  virtual void polarToIndex(double r, double phi, std::size_t &index) const {
+  virtual void polarToIndex(std::size_t &index, double r, double phi) const {
     throw NotImplementedException(__func__);
   }
 
   // to Node
-  virtual void polarToNode(double r, double phi, std::size_t &dim_1,
-                           std::size_t &dim_2) const {
+  virtual void polarToNode(std::size_t &dim_1, std::size_t &dim_2, double r,
+                           double phi) const {
     throw NotImplementedException(__func__);
   }
 
@@ -127,13 +126,13 @@ public:
   }
 
   // Distance Bounds
-  virtual bool distanceBounds(double r, double &min, double &max) const {
+  virtual bool distanceBounds(double &min, double &max, double r) const {
     throw NotImplementedException(__func__);
     return false;
   }
 
   // Bearing Bounds
-  virtual bool bearingBounds(double phi, double &min, double &max) const {
+  virtual bool bearingBounds(double &min, double &max, double phi) const {
     throw NotImplementedException(__func__);
     return false;
   }
@@ -160,13 +159,13 @@ public:
   };
 
   // to Index
-  virtual void cartesianToIndex(double x, double y, std::size_t &index) const {
+  virtual void cartesianToIndex(std::size_t &index, double x, double y) const {
     throw NotImplementedException(__func__);
   }
 
   // to Node
-  virtual void cartesianToNode(double x, double y, std::size_t &dim_1,
-                               std::size_t &dim_2) const {
+  virtual void cartesianToNode(std::size_t &dim_1, std::size_t &dim_2, double x,
+                               double y) const {
     throw NotImplementedException(__func__);
   }
 

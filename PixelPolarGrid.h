@@ -19,7 +19,7 @@ public:
   indexToPixel(std::size_t index) const override;
 
   virtual bool indexToNode(std::size_t &dim_1, std::size_t &dim_2,
-                           std::size_t &index) const override;
+                           std::size_t index) const override;
 
   // Node
   // ---------------------------------------------------------------------------
@@ -49,17 +49,17 @@ public:
   polarToPixel(double r, double phi) const override;
 
   // Sector To Pixel
-  virtual bool sectorToPixel(
-      double r, double phi_min, double phi_max,
-      std::vector<std::vector<std::size_t>> &pixel_list) const override;
+  virtual bool sectorToPixel(std::vector<std::vector<std::size_t>> &pixel_list,
+                             double r, double phi_min,
+                             double phi_max) const override;
 
   // to Index
-  virtual void polarToIndex(double r, double phi,
-                            std::size_t &index) const override;
+  virtual void polarToIndex(std::size_t &index, double r,
+                            double phi) const override;
 
   // Polar To Node
-  virtual void polarToNode(double r, double phi, std::size_t &dim_1,
-                           std::size_t &dim_2) const override;
+  virtual void polarToNode(std::size_t &dim_1, std::size_t &dim_2, double r,
+                           double phi) const override;
 
   // Distance Nodes
   virtual const std::vector<double> &
@@ -70,12 +70,12 @@ public:
   bearingNodes(double distnace = 0) const override;
 
   // Distance Bounds
-  virtual bool distanceBounds(double r, double &min,
-                              double &max) const override;
+  virtual bool distanceBounds(double &min, double &max,
+                              double r) const override;
 
   // Bearing Bounds
-  virtual bool bearingBounds(double phi, double &min,
-                             double &max) const override;
+  virtual bool bearingBounds(double &min, double &max,
+                             double phi) const override;
 
   // Polar Contains
   virtual bool polarContains(double r, double phi) const override;

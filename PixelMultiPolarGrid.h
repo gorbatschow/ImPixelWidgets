@@ -45,13 +45,13 @@ public:
   polarToPixel(double r, double phi) const override;
 
   // Sector To Pixel
-  virtual bool sectorToPixel(
-      double r, double phi_min, double phi_max,
-      std::vector<std::vector<std::size_t>> &pixel_list) const override;
+  virtual bool sectorToPixel(std::vector<std::vector<std::size_t>> &pixel_list,
+                             double r, double phi_min,
+                             double phi_max) const override;
 
   // to Index
-  virtual void polarToIndex(double r, double phi,
-                            std::size_t &index) const override;
+  virtual void polarToIndex(std::size_t &index, double r,
+                            double phi) const override;
 
   // Distance Range
   inline double distanceRange() const {
@@ -86,12 +86,12 @@ public:
   virtual bool cartesianContains(double x, double y) const override;
 
   // Range Bounds
-  virtual bool distanceBounds(double r, double &min,
-                              double &max) const override;
+  virtual bool distanceBounds(double &min, double &max,
+                              double r) const override;
 
   // Bearing Bounds
-  virtual bool bearingBounds(double phi, double &min,
-                             double &max) const override;
+  virtual bool bearingBounds(double &min, double &max,
+                             double phi) const override;
 
   // Distance Nodes
   virtual const std::vector<double> &
