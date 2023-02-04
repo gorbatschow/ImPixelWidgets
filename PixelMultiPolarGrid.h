@@ -17,22 +17,18 @@ public:
   // ---------------------------------------------------------------------------
   // Index To Pixel
   virtual const std::vector<std::size_t> &
-  indexToPixel(std::size_t index) const override {
-    assert(false);
-  }
+  indexToPixel(std::size_t index) const override;
 
   // Node
   // ---------------------------------------------------------------------------
   // to Pixel
   virtual const std::vector<std::size_t> &
   nodeToPixel(std::size_t dim_1, std::size_t dim_2) const override {
-    assert(false);
+    return IPixelGrid::nodeToPixel(dim_1, dim_2);
   }
 
   // Grid Size
-  virtual std::size_t gridSize(std::size_t dim = 0) const override {
-    return _gridSize;
-  }
+  virtual std::size_t gridSize(std::size_t dim = 0) const override;
 
   // Pixel
   // ---------------------------------------------------------------------------
@@ -52,6 +48,10 @@ public:
   virtual bool sectorToPixel(
       double r, double phi_min, double phi_max,
       std::vector<std::vector<std::size_t>> &pixel_list) const override;
+
+  // to Index
+  virtual void polarToIndex(double r, double phi,
+                            std::size_t &index) const override;
 
   // Distance Range
   inline double distanceRange() const {
@@ -106,5 +106,5 @@ public:
 
 private:
   std::vector<std::unique_ptr<PixelPolarGrid>> _gridList;
-  std::size_t _gridSize{};
+  std::vector<const std::vector<std::size_t> *> _pixelIndex;
 };

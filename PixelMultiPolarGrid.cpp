@@ -6,6 +6,20 @@ PixelMultiPolarGrid::PixelMultiPolarGrid(
 }
 
 const std::vector<std::size_t> &
+PixelMultiPolarGrid::indexToPixel(std::size_t index) const {
+  // TODO
+  if (index < _pixelIndex.size()) {
+    return (*_pixelIndex[index]);
+  }
+
+  return IPixelGrid::emptyPixel();
+}
+
+std::size_t PixelMultiPolarGrid::gridSize(std::size_t dim) const {
+  return _pixelIndex.size();
+}
+
+const std::vector<std::size_t> &
 PixelMultiPolarGrid::polarToPixel(double r, double phi) const {
   for (const auto &grid : _gridList) {
     if (grid->polarContains(r, phi)) {
@@ -57,6 +71,18 @@ bool PixelMultiPolarGrid::sectorToPixel(
     }
   }
   return false;
+}
+
+void PixelMultiPolarGrid::polarToIndex(double r, double phi,
+                                       std::size_t &index) const {
+  for (std::size_t i{}; const auto &grid : _gridList) {
+    if (grid->polarContains(r, phi)) {
+      grid->polarToIndex(r, phi, index);
+      index += i;
+      return;
+    }
+    i += grid->gridSize();
+  }
 }
 
 void PixelMultiPolarGrid::makeCartesianMesh(std::vector<double> &x,
@@ -134,13 +160,20 @@ PixelMultiPolarGrid::bearingNodes(double distance) const {
 void PixelMultiPolarGrid::setConfig(
     const std::vector<PolarGridConfig> &configList) {
   _gridList.clear();
+  _pixelIndex.clear();
+  if (configList.empty()) {
+    return;
+  }
+
   _gridList.reserve(configList.size());
   for (const auto &config : configList) {
     _gridList.push_back(std::make_unique<PixelPolarGrid>(config));
   }
 
-  _gridSize = 0;
-  for (const auto &grid : _gridList) {
-    _gridSize += grid->gridSize();
+  _pixelIndex.reserve(_gridList.size() * _gridList.front()->gridSize());
+  for (std::size_t i{}; const auto &grid : _gridList) {
+    for (std::size_t j{}; j != grid->gridSize(); ++j, ++i) {
+      _pixelIndex.push_back(&grid->indexToPixel(j));
+    }
   }
 }
