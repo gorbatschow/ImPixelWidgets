@@ -42,6 +42,12 @@ public:
     std::fill(_values.begin(), _values.end(), 0.);
   }
 
+  // Set Const Values
+  template <typename T> inline void setConstValues(const T &value) {
+    checkGridSize();
+    std::fill(_values.begin(), _values.end(), value);
+  }
+
   // Set Linear Values
   inline void setLinearValues() {
     checkGridSize();
