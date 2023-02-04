@@ -50,7 +50,7 @@ public:
                              double phi_max) const override;
 
   // to Index
-  virtual void polarToIndex(std::size_t &index, double r,
+  virtual bool polarToIndex(std::size_t &index, double r,
                             double phi) const override;
 
   // Distance Range

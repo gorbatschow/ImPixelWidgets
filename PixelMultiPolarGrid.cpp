@@ -73,16 +73,18 @@ bool PixelMultiPolarGrid::sectorToPixel(
   return false;
 }
 
-void PixelMultiPolarGrid::polarToIndex(std::size_t &index, double r,
+bool PixelMultiPolarGrid::polarToIndex(std::size_t &index, double r,
                                        double phi) const {
+  bool ok{};
   for (std::size_t i{}; const auto &grid : _gridList) {
     if (grid->polarContains(r, phi)) {
-      grid->polarToIndex(index, r, phi);
+      ok = grid->polarToIndex(index, r, phi);
       index += i;
-      return;
+      return ok;
     }
     i += grid->gridSize();
   }
+  return ok;
 }
 
 void PixelMultiPolarGrid::makeCartesianMesh(std::vector<double> &x,

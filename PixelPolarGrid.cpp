@@ -37,10 +37,7 @@ PixelPolarGrid::nodeToPixel(std::size_t node_r, std::size_t node_phi) const {
 
 bool PixelPolarGrid::nodeToIndex(std::size_t &index, std::size_t dim_1,
                                  std::size_t dim_2) const {
-  if (_flatNodesIndex.size() <= dim_1) {
-    return false;
-  }
-  if (_flatNodesIndex[dim_1].size() <= dim_2) {
+  if (_distanceNodes.size() <= dim_1 || _bearingNodes.size() <= dim_2) {
     return false;
   }
   index = _flatNodesIndex[dim_1][dim_2];
@@ -81,17 +78,16 @@ bool PixelPolarGrid::sectorToPixel(
   return false;
 }
 
-void PixelPolarGrid::polarToIndex(std::size_t &index, double r,
+bool PixelPolarGrid::polarToIndex(std::size_t &index, double r,
                                   double phi) const {
-  const std::size_t dim_1{distanceToNode(r)};
-  const std::size_t dim_2{bearingToNode(phi)};
-  index = _flatNodesIndex[dim_1][dim_2];
+  return nodeToIndex(index, distanceToNode(r), bearingToNode(phi));
 }
 
-void PixelPolarGrid::polarToNode(std::size_t &dim_1, std::size_t &dim_2,
+bool PixelPolarGrid::polarToNode(std::size_t &dim_1, std::size_t &dim_2,
                                  double r, double phi) const {
   dim_1 = distanceToNode(r);
   dim_2 = bearingToNode(phi);
+  return dim_1 < _distanceNodes.size() && dim_2 < _bearingNodes.size();
 }
 
 bool PixelPolarGrid::distanceBounds(double &min, double &max, double r) const {

@@ -54,11 +54,11 @@ public:
                              double phi_max) const override;
 
   // to Index
-  virtual void polarToIndex(std::size_t &index, double r,
+  virtual bool polarToIndex(std::size_t &index, double r,
                             double phi) const override;
 
   // Polar To Node
-  virtual void polarToNode(std::size_t &dim_1, std::size_t &dim_2, double r,
+  virtual bool polarToNode(std::size_t &dim_1, std::size_t &dim_2, double r,
                            double phi) const override;
 
   // Distance Nodes

@@ -103,14 +103,16 @@ public:
   }
 
   // to Index
-  virtual void polarToIndex(std::size_t &index, double r, double phi) const {
+  virtual bool polarToIndex(std::size_t &index, double r, double phi) const {
     throw NotImplementedException(__func__);
+    return false;
   }
 
   // to Node
-  virtual void polarToNode(std::size_t &dim_1, std::size_t &dim_2, double r,
+  virtual bool polarToNode(std::size_t &dim_1, std::size_t &dim_2, double r,
                            double phi) const {
     throw NotImplementedException(__func__);
+    return false;
   }
 
   // Distance Nodes
@@ -159,12 +161,12 @@ public:
   };
 
   // to Index
-  virtual void cartesianToIndex(std::size_t &index, double x, double y) const {
+  virtual bool cartesianToIndex(std::size_t &index, double x, double y) const {
     throw NotImplementedException(__func__);
   }
 
   // to Node
-  virtual void cartesianToNode(std::size_t &dim_1, std::size_t &dim_2, double x,
+  virtual bool cartesianToNode(std::size_t &dim_1, std::size_t &dim_2, double x,
                                double y) const {
     throw NotImplementedException(__func__);
   }
