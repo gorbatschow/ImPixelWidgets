@@ -16,8 +16,10 @@ public:
   // Set Grid
   void setGrid(std::shared_ptr<IPixelGrid> grid);
 
+  //
   void setLinearValues();
 
+  //
   void setRandomValues();
 
   // Set Polar Values

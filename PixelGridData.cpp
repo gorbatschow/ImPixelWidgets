@@ -1,4 +1,6 @@
 #include "PixelGridData.h"
+#include <numeric>
+#include <random>
 
 PixelGridData::PixelGridData() {}
 
@@ -11,9 +13,18 @@ void PixelGridData::setGrid(std::shared_ptr<IPixelGrid> grid) {
   _values.resize(_grid->gridSize(), 0.);
 }
 
-void PixelGridData::setLinearValues() {}
+void PixelGridData::setLinearValues() {
+  std::iota(_values.begin(), _values.end(), 0);
+}
 
-void PixelGridData::setRandomValues() {}
+void PixelGridData::setRandomValues() {
+  std::random_device rnd_device;
+  std::mt19937 rnd_engine{rnd_device()};
+  std::uniform_int_distribution<int> rnd_dist{0, int(_values.size())};
+
+  const auto gen{[&rnd_dist, &rnd_engine]() { return rnd_dist(rnd_engine); }};
+  std::generate(_values.begin(), _values.end(), gen);
+}
 
 void PixelGridData::setPolarValues(const double *r, const double *phi,
                                    const double *val, std::size_t size) {
