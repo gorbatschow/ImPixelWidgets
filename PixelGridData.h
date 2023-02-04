@@ -22,13 +22,27 @@ public:
   //
   void setRandomValues();
 
-  // Set Polar Values
-  void setPolarValues(const double *r, const double *phi, const double *val,
-                      std::size_t size);
+  template <typename T>
+  void setPolarValues(const T *r, const T *phi, const T *val,
+                      std::size_t size) {
+    checkGridSize();
+    std::size_t index{};
+    for (std::size_t i{}; i != size; ++i) {
+      _grid->polarToIndex(r[i], phi[i], index);
+      _values[index] = val[i];
+    }
+  }
 
-  // Set Cartesian Values
-  void setCartesianValues(const double *x, const double *y, const double *val,
-                          std::size_t size);
+  template <typename T>
+  void setCartesianValues(const T *x, const T *y, const T *val,
+                          std::size_t size) {
+    checkGridSize();
+    std::size_t index{};
+    for (std::size_t i{}; i != size; ++i) {
+      _grid->cartesianToIndex(x[i], y[i], index);
+      _values[index] = val[i];
+    }
+  }
 
   // Get Size
   inline const std::size_t size() const { return _values.size(); }
@@ -47,4 +61,6 @@ public:
 private:
   std::shared_ptr<IPixelGrid> _grid{};
   std::vector<double> _values{};
+
+  void checkGridSize();
 };

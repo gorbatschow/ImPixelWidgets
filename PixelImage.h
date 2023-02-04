@@ -23,8 +23,10 @@ public:
   // Unload Texture
   void unloadTexture();
 
-  // Clear
+  // Clear All
   void clear();
+
+  // Clear Pixel
   void clear(const std::vector<std::size_t> &pixel);
 
   // Fill All

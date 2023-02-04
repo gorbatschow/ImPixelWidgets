@@ -9,15 +9,18 @@ PixelGridData::PixelGridData(std::shared_ptr<IPixelGrid> grid) {
 }
 
 void PixelGridData::setGrid(std::shared_ptr<IPixelGrid> grid) {
+  checkGridSize();
   _grid.swap(grid);
-  _values.resize(_grid->gridSize(), 0.);
 }
 
 void PixelGridData::setLinearValues() {
+  checkGridSize();
   std::iota(_values.begin(), _values.end(), 0);
 }
 
 void PixelGridData::setRandomValues() {
+  checkGridSize();
+
   std::random_device rnd_device;
   std::mt19937 rnd_engine{rnd_device()};
   std::uniform_int_distribution<int> rnd_dist{0, int(_values.size())};
@@ -26,21 +29,8 @@ void PixelGridData::setRandomValues() {
   std::generate(_values.begin(), _values.end(), gen);
 }
 
-void PixelGridData::setPolarValues(const double *r, const double *phi,
-                                   const double *val, std::size_t size) {
-
-  std::size_t index{};
-  for (std::size_t i{}; i != size; ++i) {
-    _grid->polarToIndex(r[i], phi[i], index);
-    _values[index] = val[i];
-  }
-}
-
-void PixelGridData::setCartesianValues(const double *x, const double *y,
-                                       const double *val, std::size_t size) {
-  std::size_t index{};
-  for (std::size_t i{}; i != size; ++i) {
-    _grid->cartesianToIndex(x[i], y[i], index);
-    _values[index] = val[i];
+void PixelGridData::checkGridSize() {
+  if (_grid && _values.size() != _grid->gridSize()) {
+    _values.resize(_grid->gridSize(), 0.);
   }
 }
