@@ -17,11 +17,8 @@ public:
   // Resize
   void resize(std::size_t w, std::size_t h);
 
-  // Load Texture
-  void loadTexture();
-
-  // Unload Texture
-  void unloadTexture();
+  // Render
+  void render();
 
   // Clear All
   void clear();
@@ -54,4 +51,10 @@ private:
   std::size_t _height{};
   std::vector<uint8_t> _blob;
   GLuint _id{};
+
+  // Load Texture
+  void loadTexture();
+
+  // Unload Texture
+  void unloadTexture();
 };

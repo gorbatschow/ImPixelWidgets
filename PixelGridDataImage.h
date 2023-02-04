@@ -1,4 +1,5 @@
 #pragma once
+#include "ColorScheme.h"
 #include "PixelGridData.h"
 #include "PixelImage.h"
 #include <memory>

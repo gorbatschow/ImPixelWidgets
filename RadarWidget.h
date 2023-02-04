@@ -44,7 +44,7 @@ public:
   }
 
   // Render Image
-  inline void renderImage() { _pixelData.loadTexture(); }
+  inline void renderImage() { _pixelData.render(); }
 
   // Resize Image
   inline void resizeImage(std::size_t w, std::size_t h) {

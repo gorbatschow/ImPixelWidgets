@@ -20,23 +20,7 @@ void PixelImage::resize(std::size_t w, std::size_t h) {
   _blob.shrink_to_fit();
 }
 
-void PixelImage::loadTexture() {
-  unloadTexture();
-  glGenTextures(1, &_id);
-  glBindTexture(GL_TEXTURE_2D, _id);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-  glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _width, _height, 0, GL_RGBA,
-               GL_UNSIGNED_BYTE, _blob.data());
-}
-
-void PixelImage::unloadTexture() {
-  if (_id) {
-    glDeleteTextures(1, &_id);
-    _id = {};
-  }
-}
+void PixelImage::render() { loadTexture(); }
 
 void PixelImage::clear() { memset(_blob.data(), {}, _blob.size()); }
 
@@ -72,4 +56,22 @@ bool PixelImage::savePixelData(const std::string &fname) const {
     return (stream.good());
   }
   return false;
+}
+
+void PixelImage::loadTexture() {
+  unloadTexture();
+  glGenTextures(1, &_id);
+  glBindTexture(GL_TEXTURE_2D, _id);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _width, _height, 0, GL_RGBA,
+               GL_UNSIGNED_BYTE, _blob.data());
+}
+
+void PixelImage::unloadTexture() {
+  if (_id) {
+    glDeleteTextures(1, &_id);
+    _id = {};
+  }
 }
