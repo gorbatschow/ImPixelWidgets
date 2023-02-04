@@ -22,8 +22,8 @@ public:
   // Get Color Scheme
   inline const ColorScheme &colorScheme() const { return (*_colorScheme); }
 
-  // Fill
-  void fill(const PixelGridData &data) {
+  // Fill Data
+  inline void fillData(const PixelGridData &data) {
     PixelImage::resize(data.grid().pixelWidth(), data.grid().pixelHeight());
     for (std::size_t index{}; index != data.size(); ++index) {
       PixelImage::fill(data.pixel(index),

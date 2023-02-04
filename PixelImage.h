@@ -27,7 +27,7 @@ public:
   void clear(const std::vector<std::size_t> &pixel);
 
   // Fill All
-  void fill(const ColorRGBA &rgba = ColorRGBA::Aqua());
+  void fill(const ColorRGBA &rgba);
 
   // Fill Pixel
   void fill(const std::vector<std::size_t> &pixel,
