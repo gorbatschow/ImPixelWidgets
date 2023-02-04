@@ -25,8 +25,8 @@ public:
 
   // Set Grid
   inline void setGrid(std::shared_ptr<IPixelGrid> grid) {
-    checkGridSize();
     _grid.swap(grid);
+    checkGridSize();
   }
 
   // Get Grid
@@ -35,6 +35,12 @@ public:
   // Set Transform
   inline void setTransform(const TransformFunc &func) { _transform = func; }
   void resetTransform() { _transform = DefaultTransform; }
+
+  // Set Zero Values
+  inline void setZeroValues() {
+    checkGridSize();
+    std::fill(_values.begin(), _values.end(), 0.);
+  }
 
   // Set Linear Values
   inline void setLinearValues() {
