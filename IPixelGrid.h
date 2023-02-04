@@ -1,5 +1,5 @@
 #pragma once
-#include "imgui.h"
+#include "CoordinateSystem.h"
 #include <imgui.h>
 #include <stdexcept>
 #include <vector>
@@ -14,6 +14,22 @@ class IPixelGrid {
 public:
   virtual ~IPixelGrid() = default;
 
+  // General
+  //----------------------------------------------------------------------------
+  template <CS::System T_cs, typename T_dim>
+  void toIndex(std::size_t &index, const T_dim &dim_1,
+               const T_dim &dim_2 = {}) {
+    if constexpr (T_cs == CS::System::Index) {
+    } else if constexpr (T_cs == CS::System::Node) {
+      nodeToIndex(index, dim_1, dim_2);
+    } else if constexpr (T_cs == CS::System::Cartesian) {
+      cartesianToIndex(dim_1, dim_2, index);
+    } else if constexpr (T_cs == CS::System::Polar) {
+      polarToIndex(dim_1, dim_2, index);
+    } else if constexpr (T_cs == CS::System::Biangular) {
+    }
+  }
+
   // Index
   //----------------------------------------------------------------------------
   // to Pixel
@@ -23,6 +39,18 @@ public:
     return _emptyPixel;
   };
 
+  // toNode
+  virtual bool indexToNode(std::size_t &dim_1, std::size_t &dim_2,
+                           std::size_t &index) const {
+    throw NotImplementedException(__func__);
+  }
+
+  // contains
+  virtual bool indexContains(std::size_t &index) const {
+    throw NotImplementedException(__func__);
+    return false;
+  }
+
   // Node
   //----------------------------------------------------------------------------
   // to Pixel
@@ -31,6 +59,12 @@ public:
     throw NotImplementedException(__func__);
     return _emptyPixel;
   };
+
+  // to Index
+  virtual bool nodeToIndex(std::size_t &index, std::size_t dim_1,
+                           std::size_t dim_2) const {
+    throw NotImplementedException(__func__);
+  }
 
   // Grid Size
   virtual std::size_t gridSize(std::size_t dim = 0) const {

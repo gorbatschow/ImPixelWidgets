@@ -2,7 +2,7 @@
 #include <cmath>
 
 namespace CS {
-enum { Cartesian, Polar, Biangular };
+enum class System { Index, Node, Cartesian, Polar, Biangular };
 
 inline static const double BaseRotation{90.};
 

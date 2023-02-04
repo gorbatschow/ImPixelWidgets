@@ -12,6 +12,16 @@ PixelPolarGrid::indexToPixel(std::size_t index) const {
   return nodeToPixel(_dimNodesIndex[index][1], _dimNodesIndex[index][2]);
 }
 
+bool PixelPolarGrid::indexToNode(std::size_t &dim_1, std::size_t &dim_2,
+                                 std::size_t &index) const {
+  if (_dimNodesIndex.size() <= index) {
+    return false;
+  }
+  dim_1 = _dimNodesIndex[index][1];
+  dim_2 = _dimNodesIndex[index][2];
+  return true;
+}
+
 // Node
 //------------------------------------------------------------------------------
 const std::vector<std::size_t> &
@@ -23,6 +33,18 @@ PixelPolarGrid::nodeToPixel(std::size_t node_r, std::size_t node_phi) const {
     return IPixelGrid::emptyPixel();
   }
   return _pixelMap.at(node_r).at(node_phi);
+}
+
+bool PixelPolarGrid::nodeToIndex(std::size_t &index, std::size_t dim_1,
+                                 std::size_t dim_2) const {
+  if (_flatNodesIndex.size() <= dim_1) {
+    return false;
+  }
+  if (_flatNodesIndex[dim_1].size() <= dim_2) {
+    return false;
+  }
+  index = _flatNodesIndex[dim_1][dim_2];
+  return true;
 }
 
 // Pixel
@@ -63,7 +85,7 @@ void PixelPolarGrid::polarToIndex(double r, double phi,
                                   std::size_t &index) const {
   const std::size_t dim_1{distanceToNode(r)};
   const std::size_t dim_2{bearingToNode(phi)};
-  index = _linearNodesIndex[dim_1][dim_2];
+  index = _flatNodesIndex[dim_1][dim_2];
 }
 
 void PixelPolarGrid::polarToNode(double r, double phi, std::size_t &dim_1,
@@ -197,12 +219,12 @@ void PixelPolarGrid::updateBearingNodes() {
 }
 
 void PixelPolarGrid::updateNodesIndex() {
-  _linearNodesIndex.resize(_distanceNodes.size());
+  _flatNodesIndex.resize(_distanceNodes.size());
   _dimNodesIndex.resize(_distanceNodes.size() * _bearingNodes.size());
   for (std::size_t dim_0{}, dim_1{}; dim_1 != _distanceNodes.size(); ++dim_1) {
-    _linearNodesIndex[dim_1].resize(_bearingNodes.size());
+    _flatNodesIndex[dim_1].resize(_bearingNodes.size());
     for (std::size_t dim_2{}; dim_2 != _bearingNodes.size(); ++dim_2, ++dim_0) {
-      _linearNodesIndex[dim_1][dim_2] = dim_0;
+      _flatNodesIndex[dim_1][dim_2] = dim_0;
       _dimNodesIndex[dim_0] = {dim_0, dim_1, dim_2};
     }
   }

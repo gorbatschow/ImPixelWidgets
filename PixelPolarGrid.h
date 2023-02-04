@@ -18,11 +18,18 @@ public:
   virtual const std::vector<std::size_t> &
   indexToPixel(std::size_t index) const override;
 
+  virtual bool indexToNode(std::size_t &dim_1, std::size_t &dim_2,
+                           std::size_t &index) const override;
+
   // Node
   // ---------------------------------------------------------------------------
   // to Pixel
   virtual const std::vector<std::size_t> &
   nodeToPixel(std::size_t dim_1, std::size_t dim_2) const override;
+
+  // to Index
+  virtual bool nodeToIndex(std::size_t &index, std::size_t dim_1,
+                           std::size_t dim_2) const override;
 
   // Grid Size
   virtual std::size_t gridSize(std::size_t dim = 0) const override;
@@ -134,7 +141,7 @@ private:
   std::vector<double> _bearingNodes{};
 
   // Nodes indexing
-  std::vector<std::vector<std::size_t>> _linearNodesIndex{};
+  std::vector<std::vector<std::size_t>> _flatNodesIndex{};
   std::vector<std::array<std::size_t, 3>> _dimNodesIndex{};
 
   // Map nodes to pixels
