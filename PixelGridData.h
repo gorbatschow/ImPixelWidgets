@@ -22,14 +22,28 @@ public:
   //
   void setRandomValues();
 
+  //
+  template <typename T>
+  void setIndexValues(const std::size_t *index, const T *val,
+                      std::size_t size) {}
+
+  //
+  template <typename T>
+  void setNodeValues(const std::size_t *dim_1, const std::size_t *dim_2,
+                     const T *val, std::size_t size) {}
+
+  //
+  template <typename T>
+  void setCoordinateValues(const T *dim_1, const T *dim_2, const T *val,
+                           std::size_t size) {}
+
   template <typename T>
   void setPolarValues(const T *r, const T *phi, const T *val,
                       std::size_t size) {
     checkGridSize();
-    std::size_t index{};
-    for (std::size_t i{}; i != size; ++i) {
+    for (std::size_t index{}, i{}; i != size; ++i) {
       _grid->polarToIndex(r[i], phi[i], index);
-      _values[index] = val[i];
+      _values[index] = std::max(double(val[i]), _values[index]);
     }
   }
 
@@ -37,8 +51,7 @@ public:
   void setCartesianValues(const T *x, const T *y, const T *val,
                           std::size_t size) {
     checkGridSize();
-    std::size_t index{};
-    for (std::size_t i{}; i != size; ++i) {
+    for (std::size_t index{}, i{}; i != size; ++i) {
       _grid->cartesianToIndex(x[i], y[i], index);
       _values[index] = val[i];
     }

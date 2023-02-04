@@ -104,31 +104,6 @@ public:
 
   // Helpers
   // ---------------------------------------------------------------------------
-  inline double sind(double v) const {
-    return sin(fmod(v, 360.) * M_PI / 180.);
-  }
-
-  inline double cosd(double v) const {
-    return cos(fmod(v, 360.) * M_PI / 180.);
-  }
-
-  inline double atan2d(double y, double x) const {
-    return atan2(y, x) * 180. / M_PI;
-  }
-
-  inline void polarToCartesian(double r, double phi, double &x,
-                               double &y) const {
-    x = r * cosd(90. - phi - _config.rotation() + _baseRotation);
-    y = r * sind(90. - phi - _config.rotation() + _baseRotation);
-  }
-
-  inline void cartesianToPolar(double x, double y, double &r,
-                               double &phi) const {
-    r = sqrt(x * x + y * y);
-    phi = fmod(90. - atan2d(y, x) + 360. - _config.rotation() + _baseRotation,
-               360.);
-  }
-
   inline std::size_t distanceToNode(double r) const {
     return std::floor((r - _config.distanceMin()) / _config.distanceStep());
   }
@@ -170,6 +145,6 @@ private:
   std::vector<std::vector<std::vector<std::size_t>>> _pixelMap;
 
   // Base Rotation
-  const double _baseRotation{90.f};
+  const double _baseRotation{-90.f};
   const double _cartToPixelDecimals{1e3};
 };
