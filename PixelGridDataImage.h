@@ -2,6 +2,7 @@
 #include "ColorScheme.h"
 #include "PixelGridData.h"
 #include "PixelImage.h"
+#include <limits.h>
 #include <memory>
 
 class PixelGridDataImage : public PixelImage {
@@ -13,10 +14,15 @@ public:
   ~PixelGridDataImage() = default;
 
   // Set Color Scheme
-  template <typename T> void setColorScheme(double min, double max) {
+  template <typename T> inline void setColorScheme(double min, double max) {
     _colorScheme.reset(new T);
     _colorScheme->valueMin = min;
     _colorScheme->valueMax = max;
+  }
+
+  // Set Color Scheme
+  template <typename T> inline void setColorScheme(double max) {
+    setColorScheme<T>(std::numeric_limits<double>::epsilon(), max);
   }
 
   // Get Color Scheme
