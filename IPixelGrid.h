@@ -16,17 +16,17 @@ public:
 
   // General
   //----------------------------------------------------------------------------
-  template <CS::System T_cs, typename T_dim>
+  template <CoordinateSystem::Type T_cs, typename T_dim>
   void toIndex(std::size_t &index, const T_dim &dim_1,
                const T_dim &dim_2 = {}) {
-    if constexpr (T_cs == CS::System::Index) {
-    } else if constexpr (T_cs == CS::System::Node) {
+    if constexpr (T_cs == CoordinateSystem::Type::Index) {
+    } else if constexpr (T_cs == CoordinateSystem::Type::Node) {
       nodeToIndex(index, dim_1, dim_2);
-    } else if constexpr (T_cs == CS::System::Cartesian) {
+    } else if constexpr (T_cs == CoordinateSystem::Type::Cartesian) {
       cartesianToIndex(index, dim_1, dim_2);
-    } else if constexpr (T_cs == CS::System::Polar) {
+    } else if constexpr (T_cs == CoordinateSystem::Type::Polar) {
       polarToIndex(index, dim_1, dim_2);
-    } else if constexpr (T_cs == CS::System::Biangular) {
+    } else if constexpr (T_cs == CoordinateSystem::Type::Biangular) {
     }
   }
 

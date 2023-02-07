@@ -65,7 +65,7 @@ public:
   }
 
   // Set Coordinate Values
-  template <CS::System T_cs, typename T_val, typename T_dim>
+  template <CoordinateSystem::Type T_cs, typename T_val, typename T_dim>
   inline void setCoordinateValues(const std::vector<T_val> &val,
                                   const std::vector<T_dim> &dim_1,
                                   const std::vector<T_dim> &dim_2 = {}) {
@@ -74,13 +74,13 @@ public:
   }
 
   // Set Coordinate Values
-  template <CS::System T_cs, typename T_val, typename T_dim>
+  template <CoordinateSystem::Type T_cs, typename T_val, typename T_dim>
   inline void setCoordinateValues(const T_val *val, std::size_t size,
                                   const T_dim *dim_1,
                                   const T_dim *dim_2 = nullptr) {
     checkGridSize();
     for (std::size_t index{}, i{}; i != size; ++i) {
-      if constexpr (T_cs == CS::System::Index) {
+      if constexpr (T_cs == CoordinateSystem::Type::Index) {
         _grid->toIndex<T_cs, T_dim>(index, dim_1[i]);
       } else {
         _grid->toIndex<T_cs, T_dim>(index, dim_1[i], dim_2[i]);

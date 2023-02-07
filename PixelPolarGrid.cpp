@@ -139,9 +139,9 @@ void PixelPolarGrid::makePolarMesh(std::vector<double> &r,
 const std::vector<std::size_t> &
 PixelPolarGrid::cartesianToPixel(double x, double y) const {
   double r{}, phi{};
-  CS::cartesianToPolar(r, phi, x, y, _config.rotation());
-  r = CS::round(r, _cartToPixelDecimals);
-  phi = CS::round(phi, _cartToPixelDecimals);
+  CoordinateSystem::cartesianToPolar(r, phi, x, y, _config.rotation());
+  r = CoordinateSystem::round(r, _cartToPixelDecimals);
+  phi = CoordinateSystem::round(phi, _cartToPixelDecimals);
   return polarToPixel(r, phi);
 }
 
@@ -160,8 +160,8 @@ void PixelPolarGrid::makeCartesianMesh(std::vector<double> &x,
   double x_k{}, y_k{};
   for (std::size_t i{}; i != _distanceNodes.size(); ++i) {
     for (std::size_t j{}; j != _bearingNodes.size(); ++j) {
-      CS::polarToCartesian(x_k, y_k, _distanceNodes[i], _bearingNodes[j],
-                           _config.rotation());
+      CoordinateSystem::polarToCartesian(x_k, y_k, _distanceNodes[i],
+                                         _bearingNodes[j], _config.rotation());
       x.push_back(x_k);
       y.push_back(y_k);
     }
@@ -244,7 +244,7 @@ void PixelPolarGrid::bindNodesToPixels() {
 
   for (std::size_t i{}, k{}; i != _config.pixelHeight(); ++i) {
     for (std::size_t j{}; j != _config.pixelWidth(); ++j, ++k) {
-      CS::cartesianToPolar(r, phi, x, y, _config.rotation());
+      CoordinateSystem::cartesianToPolar(r, phi, x, y, _config.rotation());
       PixelPolarGrid::polarToNode(node_r, node_phi, r, phi);
       x += dx;
       if (_pixelMap.size() <= node_r || r >= _config.distanceMax()) {

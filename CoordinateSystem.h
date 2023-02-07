@@ -1,8 +1,8 @@
 #pragma once
 #include <cmath>
 
-namespace CS {
-enum class System { Index, Node, Cartesian, Polar, Biangular };
+namespace CoordinateSystem {
+enum class Type { Index, Node, Cartesian, Polar, Biangular };
 
 inline static const double BaseRotation{90.};
 
@@ -22,4 +22,4 @@ inline void cartesianToPolar(double &r, double &phi, double x, double y,
   r = sqrt(x * x + y * y);
   phi = fmod(90. - atan2d(y, x) + 360. + BaseRotation - rot, 360.);
 }
-} // namespace CS
+} // namespace CoordinateSystem
