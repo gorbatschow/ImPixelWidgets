@@ -1,4 +1,4 @@
-#include "ImPixelColorScheme.h"
+#include "../include/ImPixelColorScheme.h"
 
 namespace ImPixel {
 

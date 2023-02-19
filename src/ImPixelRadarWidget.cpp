@@ -1,4 +1,4 @@
-#include "ImPixelRadarWidget.h"
+#include "../include/ImPixelRadarWidget.h"
 
 namespace ImPixel {
 RadarWidget::RadarWidget() {}

@@ -1,4 +1,4 @@
-#include "ImPixelImage.h"
+#include "../include/ImPixelImage.h"
 #include <cstring>
 #include <fstream>
 

@@ -1,5 +1,5 @@
-#include "ImPixelPolarGrid.h"
-#include "ImPixelCoordinateSystem.h"
+#include "../include/ImPixelPolarGrid.h"
+#include "../include/ImPixelCoordinateSystem.h"
 
 namespace ImPixel {
 PolarGrid::PolarGrid(const PolarGridConfig &config) { setConfig(config); }

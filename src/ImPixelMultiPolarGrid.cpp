@@ -1,4 +1,4 @@
-#include "ImPixelMultiPolarGrid.h"
+#include "../include/ImPixelMultiPolarGrid.h"
 
 namespace ImPixel {
 MultiPolarGrid::MultiPolarGrid(const std::vector<PolarGridConfig> &configList) {
