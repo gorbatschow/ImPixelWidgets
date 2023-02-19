@@ -24,7 +24,7 @@ void RadarWidget::paint() {
   }
 }
 
-void RadarWidget::fillImage(const PixelGridData &data) {
+void RadarWidget::fillImage(const GridData &data) {
   _pixelData.resize(data.grid().pixelWidth(), data.grid().pixelHeight());
   _boundsMin = data.grid().cartesianBoundsMin();
   _boundsMax = data.grid().cartesianBoundsMax();

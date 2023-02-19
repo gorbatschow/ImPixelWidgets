@@ -1,18 +1,18 @@
 #pragma once
-#include "IPixelGrid.h"
+#include "ImPixelAnyGrid.h"
 #include "ImPixelPolarGrid.h"
 #include "ImPixelPolarGridConfig.h"
 #include <memory>
 #include <vector>
 
 namespace ImPixel {
-class PixelMultiPolarGrid : public IPixelGrid {
+class MultiPolarGrid : public AnyGrid {
 public:
   // Constructor
-  PixelMultiPolarGrid(const std::vector<PolarGridConfig> &configList = {});
+  MultiPolarGrid(const std::vector<PolarGridConfig> &configList = {});
 
   // Destructor
-  virtual ~PixelMultiPolarGrid() override = default;
+  virtual ~MultiPolarGrid() override = default;
 
   // Index
   // ---------------------------------------------------------------------------
@@ -25,7 +25,7 @@ public:
   // to Pixel
   virtual const std::vector<std::size_t> &
   nodeToPixel(std::size_t dim_1, std::size_t dim_2) const override {
-    return IPixelGrid::nodeToPixel(dim_1, dim_2);
+    return AnyGrid::nodeToPixel(dim_1, dim_2);
   }
 
   // Grid Size
@@ -106,7 +106,7 @@ public:
   void setConfig(const std::vector<PolarGridConfig> &configList);
 
 private:
-  std::vector<std::unique_ptr<PixelPolarGrid>> _gridList;
+  std::vector<std::unique_ptr<PolarGrid>> _gridList;
   std::vector<const std::vector<std::size_t> *> _pixelIndex;
 };
 } // namespace ImPixel

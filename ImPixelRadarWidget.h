@@ -28,7 +28,7 @@ public:
   const ColorScheme &colorScheme() const { return (*_colorScheme); }
 
   // Fill Image
-  void fillImage(const PixelGridData &data);
+  void fillImage(const GridData &data);
 
   inline void fillImage(const std::vector<std::size_t> &pixel,
                         const ColorRGBA &color) {
@@ -53,7 +53,7 @@ public:
   }
 
   // Get Image
-  const PixelImage &image() const { return _pixelData; }
+  const Image &image() const { return _pixelData; }
 
   // Display Scatter
   inline void setDisplayScatter(bool display) { _displayScatter = display; }
@@ -62,7 +62,7 @@ public:
 private:
   ImVec2 _boundsMin;
   ImVec2 _boundsMax;
-  PixelImage _pixelData;
+  Image _pixelData;
   std::vector<double> _xGridNodes, _yGridNodes;
   std::unique_ptr<ColorScheme> _colorScheme{new ColorSchemeMono};
   bool _displayScatter{false};

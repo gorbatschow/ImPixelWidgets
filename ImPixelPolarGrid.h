@@ -1,5 +1,5 @@
 #pragma once
-#include "IPixelGrid.h"
+#include "ImPixelAnyGrid.h"
 #include "ImPixelPolarGridConfig.h"
 #include <array>
 #include <cassert>
@@ -8,10 +8,10 @@
 #include <vector>
 
 namespace ImPixel {
-class PixelPolarGrid : public IPixelGrid {
+class PolarGrid : public AnyGrid {
 public:
-  PixelPolarGrid(const PolarGridConfig &config = PolarGridConfig());
-  virtual ~PixelPolarGrid() override = default;
+  PolarGrid(const PolarGridConfig &config = PolarGridConfig());
+  virtual ~PolarGrid() override = default;
 
   // Index
   // ---------------------------------------------------------------------------

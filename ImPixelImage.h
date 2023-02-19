@@ -7,13 +7,13 @@
 #include <vector>
 
 namespace ImPixel {
-class PixelImage {
+class Image {
 public:
   // Constructor
-  PixelImage();
+  Image();
 
   // Destructor
-  ~PixelImage();
+  ~Image();
 
   // Resize
   void resize(std::size_t w, std::size_t h);

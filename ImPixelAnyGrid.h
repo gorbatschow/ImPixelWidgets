@@ -5,7 +5,7 @@
 #include <vector>
 
 namespace ImPixel {
-class IPixelGrid {
+class AnyGrid {
   class NotImplementedException : public std::logic_error {
   public:
     NotImplementedException(const std::string &func_name)
@@ -13,7 +13,7 @@ class IPixelGrid {
   };
 
 public:
-  virtual ~IPixelGrid() = default;
+  virtual ~AnyGrid() = default;
 
   // General
   //----------------------------------------------------------------------------
