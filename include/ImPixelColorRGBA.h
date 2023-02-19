@@ -1,40 +1,53 @@
 #pragma once
 #include <array>
 #include <cstdint>
+#include <cstring>
 
+namespace ImPixel {
 class ColorRGBA {
 public:
   // Constructor
   ColorRGBA() {}
 
-  ColorRGBA(const uint8_t *ptr)
-      : _red{ptr[0]}, _green{ptr[1]}, _blue{ptr[2]}, _alpha{ptr[3]} {}
+  ColorRGBA(const uint8_t *rgba) {
+    std::memcpy(_rgba.data(), rgba, _rgba.size());
+  }
 
-  ColorRGBA(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)
-      : _red(red), _green(green), _blue(blue), _alpha(alpha) {}
+  ColorRGBA(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha) {
+    _rgba[0] = red;
+    _rgba[1] = green;
+    _rgba[2] = blue;
+    _rgba[3] = alpha;
+  }
 
   // Destructor
   ~ColorRGBA() = default;
 
   // Fill
-  inline void fill(uint8_t *ptr) const {
-    ptr[0] = red();
-    ptr[1] = green();
-    ptr[2] = blue();
-    ptr[3] = alpha();
+  inline void fill(uint8_t *dst) const {
+    std::memcpy(dst, _rgba.data(), _rgba.size());
   }
 
-  inline void setRed(uint8_t red) { _red = red; }
-  inline uint8_t red() const { return _red; }
+  inline void setRed(uint8_t red) { _rgba[0] = red; }
+  inline uint8_t red() const { return _rgba[0]; }
 
-  inline void setGreen(uint8_t green) { _green = green; }
-  inline uint8_t green() const { return _green; }
+  inline void setGreen(uint8_t green) { _rgba[1] = green; }
+  inline uint8_t green() const { return _rgba[1]; }
 
-  inline void setBlue(uint8_t blue) { _blue = blue; }
-  inline uint8_t blue() const { return _blue; }
+  inline void setBlue(uint8_t blue) { _rgba[2] = blue; }
+  inline uint8_t blue() const { return _rgba[2]; }
 
-  inline void setAlpha(uint8_t alpha) { _alpha = alpha; }
-  inline uint8_t alpha() const { return _alpha; }
+  inline void setAlpha(uint8_t alpha) { _rgba[3] = alpha; }
+  inline uint8_t alpha() const { return _rgba[3]; }
+
+  inline static void Fill(uint8_t *dst, const uint8_t *src) {
+    std::memcpy(dst, src, Size());
+  }
+  inline static void Fill(uint8_t *dst, const std::array<uint8_t, 3> &rgb,
+                          const uint8_t &alpha) {
+    std::memcpy(dst, rgb.data(), Size());
+    dst[3] = alpha;
+  }
 
   static ColorRGBA Transparent() { return {0, 0, 0, 0}; }
   static ColorRGBA Aqua() { return {0, 255, 255, 255}; }
@@ -64,8 +77,6 @@ public:
   }
 
 private:
-  uint8_t _red{};
-  uint8_t _green{};
-  uint8_t _blue{};
-  uint8_t _alpha{};
+  std::array<uint8_t, 4> _rgba{};
 };
+} // namespace ImPixel

@@ -1,6 +1,7 @@
 #pragma once
 #include <cmath>
 
+namespace ImPixel {
 namespace CoordinateSystem {
 enum class Type { Index, Node, Cartesian, Polar, Biangular };
 
@@ -23,3 +24,4 @@ inline void cartesianToPolar(double &r, double &phi, double x, double y,
   phi = fmod(90. - atan2d(y, x) + 360. + BaseRotation - rot, 360.);
 }
 } // namespace CoordinateSystem
+} // namespace ImPixel

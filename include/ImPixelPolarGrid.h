@@ -1,16 +1,17 @@
 #pragma once
-#include "IPixelGrid.h"
-#include "PolarGridConfig.h"
+#include "ImPixelAnyGrid.h"
+#include "ImPixelPolarGridConfig.h"
 #include <array>
 #include <cassert>
 #include <cmath>
 #include <numeric>
 #include <vector>
 
-class PixelPolarGrid : public IPixelGrid {
+namespace ImPixel {
+class PolarGrid : public AnyGrid {
 public:
-  PixelPolarGrid(const PolarGridConfig &config = PolarGridConfig());
-  virtual ~PixelPolarGrid() override = default;
+  PolarGrid(const PolarGridConfig &config = PolarGridConfig());
+  virtual ~PolarGrid() override = default;
 
   // Index
   // ---------------------------------------------------------------------------
@@ -150,3 +151,4 @@ private:
   // Base Rotation
   const double _cartToPixelDecimals{1e3};
 };
+} // namespace ImPixel

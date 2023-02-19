@@ -1,16 +1,17 @@
-#include "PixelImage.h"
+#include "../include/ImPixelImage.h"
 #include <cstring>
 #include <fstream>
 
-PixelImage::PixelImage() {
+namespace ImPixel {
+Image::Image() {
   resize(4, 4);
   fill(ColorRGBA::Aqua());
   loadTexture();
 }
 
-PixelImage::~PixelImage() { unloadTexture(); }
+Image::~Image() { unloadTexture(); }
 
-void PixelImage::resize(std::size_t w, std::size_t h) {
+void Image::resize(std::size_t w, std::size_t h) {
   if (_width == w && _height == h) {
     return;
   }
@@ -20,35 +21,39 @@ void PixelImage::resize(std::size_t w, std::size_t h) {
   _blob.shrink_to_fit();
 }
 
-void PixelImage::render() { loadTexture(); }
+void Image::render() { loadTexture(); }
 
-void PixelImage::clear() { memset(_blob.data(), {}, _blob.size()); }
+void Image::clear() { memset(_blob.data(), {}, _blob.size()); }
 
-void PixelImage::clear(const std::vector<std::size_t> &pixel) {
+void Image::clear(const std::vector<std::size_t> &pixel) {
   fill(pixel, ColorRGBA::Transparent());
 }
 
-void PixelImage::fill(const ColorRGBA &rgba) {
+void Image::fill(const ColorRGBA &color) {
   for (std::size_t i = 0; i != _blob.size(); i = i + ColorRGBA::Size()) {
-    rgba.fill(&_blob[i]);
+    color.fill(&_blob[i]);
   }
 }
 
-void PixelImage::fill(const std::vector<std::size_t> &pixel,
-                      const ColorRGBA &rgba) {
+void Image::fill(const std::vector<std::size_t> &pixel,
+                 const ColorRGBA &color) {
   std::size_t i{};
   for (const auto &ind : pixel) {
     i = ind * ColorRGBA::Size();
-    rgba.fill(&_blob[i]);
+    color.fill(&_blob[i]);
   }
 }
 
-ColorRGBA PixelImage::colorAt(std::size_t pixel) const {
-  pixel *= ColorRGBA::Size();
-  return ColorRGBA(&_blob[pixel]);
+void Image::fill(const std::vector<std::size_t> &pixel,
+                 const std::array<uint8_t, 3> &rgb, const uint8_t &alpha) {
+  std::size_t i{};
+  for (const auto &ind : pixel) {
+    i = ind * ColorRGBA::Size();
+    ColorRGBA::Fill(&_blob[i], rgb, alpha);
+  }
 }
 
-bool PixelImage::savePixelData(const std::string &fname) const {
+bool Image::savePixelData(const std::string &fname) const {
 
   std::ofstream stream(fname.c_str(), std::fstream::out | std::fstream::binary);
   if (stream) {
@@ -58,7 +63,7 @@ bool PixelImage::savePixelData(const std::string &fname) const {
   return false;
 }
 
-void PixelImage::loadTexture() {
+void Image::loadTexture() {
   unloadTexture();
   glGenTextures(1, &_id);
   glBindTexture(GL_TEXTURE_2D, _id);
@@ -69,9 +74,10 @@ void PixelImage::loadTexture() {
                GL_UNSIGNED_BYTE, _blob.data());
 }
 
-void PixelImage::unloadTexture() {
+void Image::unloadTexture() {
   if (_id) {
     glDeleteTextures(1, &_id);
     _id = {};
   }
 }
+} // namespace ImPixel

@@ -1,5 +1,6 @@
-#include "RadarWidget.h"
+#include "../include/ImPixelRadarWidget.h"
 
+namespace ImPixel {
 RadarWidget::RadarWidget() {}
 
 void RadarWidget::paint() {
@@ -23,7 +24,7 @@ void RadarWidget::paint() {
   }
 }
 
-void RadarWidget::fillImage(const PixelGridData &data) {
+void RadarWidget::fillImage(const GridData &data) {
   _pixelData.resize(data.grid().pixelWidth(), data.grid().pixelHeight());
   _boundsMin = data.grid().cartesianBoundsMin();
   _boundsMax = data.grid().cartesianBoundsMax();
@@ -33,3 +34,4 @@ void RadarWidget::fillImage(const PixelGridData &data) {
                     _colorScheme->valueToColor(data.value(dim_0)));
   }
 }
+} // namespace ImPixel

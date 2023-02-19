@@ -6,12 +6,13 @@ set(CXX_CMAKE_STANDARD 20)
 set(CXX_CMAKE_STANDARD_REQUIRED ON)
 
 set(IMPIXELWIDGETS_SOURCES
-    RadarWidget.cpp
-    ColorSchemeTurbo.cpp
-    PixelImage.cpp
-    PixelGridData.cpp
-    PixelPolarGrid.cpp
-    PixelMultiPolarGrid.cpp
+    src/ImPixelRadarWidget.cpp
+    src/ImPixelColorSchemeMono.cpp
+    src/ImPixelColorSchemeTurbo.cpp
+    src/ImPixelImage.cpp
+    src/ImPixelGridData.cpp
+    src/ImPixelPolarGrid.cpp
+    src/ImPixelMultiPolarGrid.cpp
 )
 
 add_library(${PROJECT_NAME} ${IMPIXELWIDGETS_SOURCES})

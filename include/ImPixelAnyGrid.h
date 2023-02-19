@@ -1,10 +1,11 @@
 #pragma once
-#include "CoordinateSystem.h"
+#include "ImPixelCoordinateSystem.h"
 #include <imgui.h>
 #include <stdexcept>
 #include <vector>
 
-class IPixelGrid {
+namespace ImPixel {
+class AnyGrid {
   class NotImplementedException : public std::logic_error {
   public:
     NotImplementedException(const std::string &func_name)
@@ -12,7 +13,7 @@ class IPixelGrid {
   };
 
 public:
-  virtual ~IPixelGrid() = default;
+  virtual ~AnyGrid() = default;
 
   // General
   //----------------------------------------------------------------------------
@@ -36,7 +37,7 @@ public:
   virtual const std::vector<std::size_t> &
   indexToPixel(std::size_t index) const {
     throw NotImplementedException(__func__);
-    return _emptyPixel;
+    return emptyPixel();
   };
 
   // toNode
@@ -57,7 +58,7 @@ public:
   virtual const std::vector<std::size_t> &nodeToPixel(std::size_t dim_1,
                                                       std::size_t dim_2) const {
     throw NotImplementedException(__func__);
-    return _emptyPixel;
+    return emptyPixel();
   };
 
   // to Index
@@ -92,7 +93,7 @@ public:
   virtual const std::vector<std::size_t> &polarToPixel(double r,
                                                        double phi) const {
     throw NotImplementedException(__func__);
-    return _emptyPixel;
+    return emptyPixel();
   };
 
   // Sector to Pixel
@@ -118,13 +119,13 @@ public:
   // Distance Nodes
   virtual const std::vector<double> &distanceNodes(double bearing = 0) const {
     throw NotImplementedException(__func__);
-    return _emptyNodes;
+    return emptyNodes();
   }
 
   // Bearing Nodes
   virtual const std::vector<double> &bearingNodes(double distance = 0) const {
     throw NotImplementedException(__func__);
-    return _emptyNodes;
+    return emptyNodes();
   }
 
   // Distance Bounds
@@ -157,7 +158,7 @@ public:
   virtual const std::vector<std::size_t> &cartesianToPixel(double x,
                                                            double y) const {
     throw NotImplementedException(__func__);
-    return _emptyPixel;
+    return emptyPixel();
   };
 
   // to Index
@@ -197,12 +198,13 @@ public:
 
 protected:
   inline const std::vector<std::size_t> &emptyPixel() const {
-    return _emptyPixel;
+    static const std::vector<std::size_t> emptyPixel{};
+    return emptyPixel;
   }
 
-  inline const std::vector<double> &emptyNodes() const { return _emptyNodes; }
-
-private:
-  const std::vector<std::size_t> _emptyPixel{};
-  const std::vector<double> _emptyNodes{};
+  inline const std::vector<double> &emptyNodes() const {
+    static const std::vector<double> emptyNodes{};
+    return emptyNodes;
+  }
 };
+} // namespace ImPixel

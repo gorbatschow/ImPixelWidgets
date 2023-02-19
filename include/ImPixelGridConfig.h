@@ -1,6 +1,7 @@
 #pragma once
 #include <cstddef>
 
+namespace ImPixel {
 class PixelGridConfig {
 
 public:
@@ -24,3 +25,4 @@ private:
   std::size_t _pixelWidth{512};
   std::size_t _pixelHeight{512};
 };
+} // namespace ImPixel

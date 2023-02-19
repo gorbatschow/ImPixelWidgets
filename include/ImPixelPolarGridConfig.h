@@ -1,7 +1,8 @@
 #pragma once
-#include "PixelGridConfig.h"
+#include "ImPixelGridConfig.h"
 #include <cstddef>
 
+namespace ImPixel {
 class PolarGridConfig : public PixelGridConfig {
 public:
   PolarGridConfig() = default;
@@ -49,3 +50,4 @@ private:
   double _bearingMax{180.};
   double _bearingStep{5.};
 };
+} // namespace ImPixel

@@ -1,17 +1,18 @@
 #pragma once
-#include "ColorScheme.h"
-#include "PixelGridData.h"
-#include "PixelImage.h"
+#include "ImPixelColorScheme.h"
+#include "ImPixelGridData.h"
+#include "ImPixelImage.h"
 #include <limits.h>
 #include <memory>
 
-class PixelGridDataImage : public PixelImage {
+namespace ImPixel {
+class GridDataImage : public Image {
 public:
   // Constructor
-  PixelGridDataImage() {}
+  GridDataImage() {}
 
   // Destructor
-  ~PixelGridDataImage() = default;
+  ~GridDataImage() = default;
 
   // Set Color Scheme
   template <typename T> inline void setColorScheme(double min, double max) {
@@ -29,14 +30,15 @@ public:
   inline const ColorScheme &colorScheme() const { return (*_colorScheme); }
 
   // Fill Data
-  inline void fillData(const PixelGridData &data) {
-    PixelImage::resize(data.grid().pixelWidth(), data.grid().pixelHeight());
+  inline void fillData(const GridData &data) {
+    Image::resize(data.grid().pixelWidth(), data.grid().pixelHeight());
     for (std::size_t index{}; index != data.size(); ++index) {
-      PixelImage::fill(data.pixel(index),
-                       _colorScheme->valueToColor(data.value(index)));
+      Image::fill(data.pixel(index),
+                  _colorScheme->valueToColor(data.value(index)));
     }
   }
 
 private:
   std::unique_ptr<ColorScheme> _colorScheme{new ColorSchemeMono};
 };
+} // namespace ImPixel

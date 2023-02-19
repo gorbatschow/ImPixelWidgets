@@ -1,18 +1,19 @@
 #pragma once
-#include "ColorRGBA.h"
+#include "ImPixelColorRGBA.h"
 #include <GL/gl.h>
 #include <array>
 #include <imgui.h>
 #include <string>
 #include <vector>
 
-class PixelImage {
+namespace ImPixel {
+class Image {
 public:
   // Constructor
-  PixelImage();
+  Image();
 
   // Destructor
-  ~PixelImage();
+  ~Image();
 
   // Resize
   void resize(std::size_t w, std::size_t h);
@@ -27,14 +28,21 @@ public:
   void clear(const std::vector<std::size_t> &pixel);
 
   // Fill All
-  void fill(const ColorRGBA &rgba);
+  void fill(const ColorRGBA &color);
 
   // Fill Pixel
+  void fill(const std::vector<std::size_t> &pixel, const ColorRGBA &color);
   void fill(const std::vector<std::size_t> &pixel,
-            const ColorRGBA &rgba = ColorRGBA::Lime());
+            const std::array<uint8_t, 3> &rgb, const uint8_t &alpha);
 
   // Get Color
-  ColorRGBA colorAt(std::size_t pixel) const;
+  inline ColorRGBA colorAt(std::size_t pixel) const {
+    pixel *= ColorRGBA::Size();
+    return ColorRGBA(&_blob[pixel]);
+  }
+  inline const uint8_t *rgbaAt(std::size_t pixel) const {
+    return &_blob[pixel];
+  }
 
   // ID
   inline GLuint glID() const { return _id; }
@@ -58,3 +66,4 @@ private:
   // Unload Texture
   void unloadTexture();
 };
+} // namespace ImPixel

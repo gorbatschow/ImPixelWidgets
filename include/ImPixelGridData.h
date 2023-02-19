@@ -1,12 +1,13 @@
 #pragma once
-#include "IPixelGrid.h"
+#include "ImPixelAnyGrid.h"
 #include <functional>
 #include <memory>
 #include <numeric>
 #include <random>
 #include <vector>
 
-class PixelGridData {
+namespace ImPixel {
+class GridData {
 public:
   using TransformFunc =
       std::function<double(const double &curr, const double &prev)>;
@@ -15,22 +16,22 @@ public:
       [](const double &curr, const double &) { return curr; }};
 
   // Constructor
-  PixelGridData() = default;
+  GridData() = default;
 
   // Constructor
-  PixelGridData(std::shared_ptr<IPixelGrid> grid) { setGrid(grid); }
+  GridData(std::shared_ptr<AnyGrid> grid) { setGrid(grid); }
 
   // Destructor
-  ~PixelGridData() = default;
+  ~GridData() = default;
 
   // Set Grid
-  inline void setGrid(std::shared_ptr<IPixelGrid> grid) {
+  inline void setGrid(std::shared_ptr<AnyGrid> grid) {
     _grid.swap(grid);
     checkGridSize();
   }
 
   // Get Grid
-  inline const IPixelGrid &grid() const { return (*_grid); }
+  inline const AnyGrid &grid() const { return (*_grid); }
 
   // Set Transform
   inline void setTransform(const TransformFunc &func) { _transform = func; }
@@ -101,7 +102,7 @@ public:
   }
 
 private:
-  std::shared_ptr<IPixelGrid> _grid{};
+  std::shared_ptr<AnyGrid> _grid{};
   std::vector<double> _values{};
   TransformFunc _transform{DefaultTransform};
 
@@ -111,3 +112,4 @@ private:
     }
   }
 };
+} // namespace ImPixel
