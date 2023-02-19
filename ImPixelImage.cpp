@@ -29,23 +29,28 @@ void Image::clear(const std::vector<std::size_t> &pixel) {
   fill(pixel, ColorRGBA::Transparent());
 }
 
-void Image::fill(const ColorRGBA &rgba) {
+void Image::fill(const ColorRGBA &color) {
   for (std::size_t i = 0; i != _blob.size(); i = i + ColorRGBA::Size()) {
-    rgba.fill(&_blob[i]);
+    color.fill(&_blob[i]);
   }
 }
 
-void Image::fill(const std::vector<std::size_t> &pixel, const ColorRGBA &rgba) {
+void Image::fill(const std::vector<std::size_t> &pixel,
+                 const ColorRGBA &color) {
   std::size_t i{};
   for (const auto &ind : pixel) {
     i = ind * ColorRGBA::Size();
-    rgba.fill(&_blob[i]);
+    color.fill(&_blob[i]);
   }
 }
 
-ColorRGBA Image::colorAt(std::size_t pixel) const {
-  pixel *= ColorRGBA::Size();
-  return ColorRGBA(&_blob[pixel]);
+void Image::fill(const std::vector<std::size_t> &pixel,
+                 const std::array<uint8_t, 3> &rgb, const uint8_t &alpha) {
+  std::size_t i{};
+  for (const auto &ind : pixel) {
+    i = ind * ColorRGBA::Size();
+    ColorRGBA::Fill(&_blob[i], rgb, alpha);
+  }
 }
 
 bool Image::savePixelData(const std::string &fname) const {

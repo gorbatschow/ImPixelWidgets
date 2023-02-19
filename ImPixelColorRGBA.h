@@ -9,8 +9,8 @@ public:
   // Constructor
   ColorRGBA() {}
 
-  ColorRGBA(const uint8_t *ptr) {
-    std::memcpy(_rgba.data(), ptr, _rgba.size());
+  ColorRGBA(const uint8_t *rgba) {
+    std::memcpy(_rgba.data(), rgba, _rgba.size());
   }
 
   ColorRGBA(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha) {
@@ -24,8 +24,8 @@ public:
   ~ColorRGBA() = default;
 
   // Fill
-  inline void fill(uint8_t *ptr) const {
-    std::memcpy(ptr, _rgba.data(), _rgba.size());
+  inline void fill(uint8_t *dst) const {
+    std::memcpy(dst, _rgba.data(), _rgba.size());
   }
 
   inline void setRed(uint8_t red) { _rgba[0] = red; }
@@ -39,6 +39,15 @@ public:
 
   inline void setAlpha(uint8_t alpha) { _rgba[3] = alpha; }
   inline uint8_t alpha() const { return _rgba[3]; }
+
+  inline static void Fill(uint8_t *dst, const uint8_t *src) {
+    std::memcpy(dst, src, Size());
+  }
+  inline static void Fill(uint8_t *dst, const std::array<uint8_t, 3> &rgb,
+                          const uint8_t &alpha) {
+    std::memcpy(dst, rgb.data(), Size());
+    dst[3] = alpha;
+  }
 
   static ColorRGBA Transparent() { return {0, 0, 0, 0}; }
   static ColorRGBA Aqua() { return {0, 255, 255, 255}; }

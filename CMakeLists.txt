@@ -7,6 +7,7 @@ set(CXX_CMAKE_STANDARD_REQUIRED ON)
 
 set(IMPIXELWIDGETS_SOURCES
     ImPixelRadarWidget.cpp
+    ImPixelColorSchemeMono.cpp
     ImPixelColorSchemeTurbo.cpp
     ImPixelImage.cpp
     ImPixelGridData.cpp
