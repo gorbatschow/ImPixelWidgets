@@ -1,11 +1,12 @@
 #pragma once
-#include "ColorRGBA.h"
+#include "ImPixelColorRGBA.h"
 #include <GL/gl.h>
 #include <array>
 #include <imgui.h>
 #include <string>
 #include <vector>
 
+namespace ImPixel {
 class PixelImage {
 public:
   // Constructor
@@ -58,3 +59,4 @@ private:
   // Unload Texture
   void unloadTexture();
 };
+} // namespace ImPixel

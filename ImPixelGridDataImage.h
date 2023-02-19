@@ -1,10 +1,11 @@
 #pragma once
-#include "ColorScheme.h"
-#include "PixelGridData.h"
-#include "PixelImage.h"
+#include "ImPixelColorScheme.h"
+#include "ImPixelGridData.h"
+#include "ImPixelImage.h"
 #include <limits.h>
 #include <memory>
 
+namespace ImPixel {
 class PixelGridDataImage : public PixelImage {
 public:
   // Constructor
@@ -40,3 +41,4 @@ public:
 private:
   std::unique_ptr<ColorScheme> _colorScheme{new ColorSchemeMono};
 };
+} // namespace ImPixel

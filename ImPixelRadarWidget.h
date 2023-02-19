@@ -1,10 +1,11 @@
 #pragma once
-#include "ColorScheme.h"
-#include "PixelGridData.h"
-#include "PixelImage.h"
+#include "ImPixelColorScheme.h"
+#include "ImPixelGridData.h"
+#include "ImPixelImage.h"
 #include <implot.h>
 #include <memory>
 
+namespace ImPixel {
 class RadarWidget {
 public:
   // Constructor
@@ -66,3 +67,4 @@ private:
   std::unique_ptr<ColorScheme> _colorScheme{new ColorSchemeMono};
   bool _displayScatter{false};
 };
+} // namespace ImPixel

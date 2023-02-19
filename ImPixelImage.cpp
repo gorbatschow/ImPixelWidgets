@@ -1,7 +1,8 @@
-#include "PixelImage.h"
+#include "ImPixelImage.h"
 #include <cstring>
 #include <fstream>
 
+namespace ImPixel {
 PixelImage::PixelImage() {
   resize(4, 4);
   fill(ColorRGBA::Aqua());
@@ -75,3 +76,4 @@ void PixelImage::unloadTexture() {
     _id = {};
   }
 }
+} // namespace ImPixel

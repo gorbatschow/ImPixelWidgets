@@ -1,9 +1,10 @@
 #pragma once
-#include "CoordinateSystem.h"
+#include "ImPixelCoordinateSystem.h"
 #include <imgui.h>
 #include <stdexcept>
 #include <vector>
 
+namespace ImPixel {
 class IPixelGrid {
   class NotImplementedException : public std::logic_error {
   public:
@@ -206,3 +207,4 @@ private:
   const std::vector<std::size_t> _emptyPixel{};
   const std::vector<double> _emptyNodes{};
 };
+} // namespace ImPixel

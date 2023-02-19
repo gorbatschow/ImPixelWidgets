@@ -1,10 +1,11 @@
 #pragma once
 #include "IPixelGrid.h"
-#include "PixelPolarGrid.h"
-#include "PolarGridConfig.h"
+#include "ImPixelPolarGrid.h"
+#include "ImPixelPolarGridConfig.h"
 #include <memory>
 #include <vector>
 
+namespace ImPixel {
 class PixelMultiPolarGrid : public IPixelGrid {
 public:
   // Constructor
@@ -108,3 +109,4 @@ private:
   std::vector<std::unique_ptr<PixelPolarGrid>> _gridList;
   std::vector<const std::vector<std::size_t> *> _pixelIndex;
 };
+} // namespace ImPixel

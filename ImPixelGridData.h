@@ -6,6 +6,7 @@
 #include <random>
 #include <vector>
 
+namespace ImPixel {
 class PixelGridData {
 public:
   using TransformFunc =
@@ -111,3 +112,4 @@ private:
     }
   }
 };
+} // namespace ImPixel

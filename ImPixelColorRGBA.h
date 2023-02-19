@@ -2,6 +2,7 @@
 #include <array>
 #include <cstdint>
 
+namespace ImPixel {
 class ColorRGBA {
 public:
   // Constructor
@@ -69,3 +70,4 @@ private:
   uint8_t _blue{};
   uint8_t _alpha{};
 };
+} // namespace ImPixel

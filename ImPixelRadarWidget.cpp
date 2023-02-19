@@ -1,5 +1,6 @@
-#include "RadarWidget.h"
+#include "ImPixelRadarWidget.h"
 
+namespace ImPixel {
 RadarWidget::RadarWidget() {}
 
 void RadarWidget::paint() {
@@ -33,3 +34,4 @@ void RadarWidget::fillImage(const PixelGridData &data) {
                     _colorScheme->valueToColor(data.value(dim_0)));
   }
 }
+} // namespace ImPixel

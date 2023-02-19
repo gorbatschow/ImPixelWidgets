@@ -1,5 +1,6 @@
-#include "PixelMultiPolarGrid.h"
+#include "ImPixelMultiPolarGrid.h"
 
+namespace ImPixel {
 PixelMultiPolarGrid::PixelMultiPolarGrid(
     const std::vector<PolarGridConfig> &configList) {
   setConfig(configList);
@@ -179,3 +180,4 @@ void PixelMultiPolarGrid::setConfig(
     }
   }
 }
+} // namespace ImPixel

@@ -1,12 +1,13 @@
 #pragma once
 #include "IPixelGrid.h"
-#include "PolarGridConfig.h"
+#include "ImPixelPolarGridConfig.h"
 #include <array>
 #include <cassert>
 #include <cmath>
 #include <numeric>
 #include <vector>
 
+namespace ImPixel {
 class PixelPolarGrid : public IPixelGrid {
 public:
   PixelPolarGrid(const PolarGridConfig &config = PolarGridConfig());
@@ -150,3 +151,4 @@ private:
   // Base Rotation
   const double _cartToPixelDecimals{1e3};
 };
+} // namespace ImPixel

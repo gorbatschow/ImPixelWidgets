@@ -1,7 +1,8 @@
 #pragma once
-#include "ColorRGBA.h"
+#include "ImPixelColorRGBA.h"
 #include <algorithm>
 
+namespace ImPixel {
 struct ColorScheme {
   double valueMin{0};
   double valueMax{1};
@@ -38,3 +39,4 @@ struct ColorSchemeTurbo : public ColorScheme {
   virtual uint8_t green(uint8_t value) const override;
   virtual uint8_t blue(uint8_t value) const override;
 };
+} // namespace ImPixel

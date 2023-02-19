@@ -1,5 +1,6 @@
-#include "ColorScheme.h"
+#include "ImPixelColorScheme.h"
 
+namespace ImPixel {
 // Copyright 2019 Google LLC.
 // SPDX-License-Identifier: Apache-2.0
 // Author: Anton Mikhailov
@@ -82,3 +83,4 @@ uint8_t ColorSchemeTurbo::green(uint8_t value) const {
 uint8_t ColorSchemeTurbo::blue(uint8_t value) const {
   return turbo_srgb_bytes[value][2];
 }
+} // namespace ImPixel

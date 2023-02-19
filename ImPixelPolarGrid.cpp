@@ -1,6 +1,7 @@
-#include "PixelPolarGrid.h"
-#include "CoordinateSystem.h"
+#include "ImPixelPolarGrid.h"
+#include "ImPixelCoordinateSystem.h"
 
+namespace ImPixel {
 PixelPolarGrid::PixelPolarGrid(const PolarGridConfig &config) {
   setConfig(config);
 }
@@ -259,3 +260,4 @@ void PixelPolarGrid::bindNodesToPixels() {
     y -= dy;
   }
 }
+} // namespace ImPixel
