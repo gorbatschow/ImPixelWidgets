@@ -52,6 +52,7 @@ public:
   static ColorRGBA Transparent() { return {0, 0, 0, 0}; }
   static ColorRGBA Aqua() { return {0, 255, 255, 255}; }
   static ColorRGBA Lime() { return {0, 255, 0, 255}; }
+  static ColorRGBA Black() { return {0, 0, 0, 255}; }
 
   static uint8_t Size() { return 4; }
   static uint8_t Max() { return 255; }
