@@ -15,15 +15,22 @@ public:
   ~GridDataImage() = default;
 
   // Set Color Scheme
-  template <typename T> inline void setColorScheme(double min, double max) {
+  template <typename T> inline void setColorScheme(double min, double max,
+                             ColorRGBA background = ColorRGBA::Transparent()) {
     _colorScheme.reset(new T);
     _colorScheme->valueMin = min;
     _colorScheme->valueMax = max;
+    _colorScheme->valueBackground = background;
   }
 
   // Set Color Scheme
   template <typename T> inline void setColorScheme(double max) {
     setColorScheme<T>(std::numeric_limits<double>::epsilon(), max);
+  }
+
+  // Set Color Scheme
+  template <typename T> inline void setColorScheme(double max, ColorRGBA background) {
+    setColorScheme<T>(std::numeric_limits<double>::epsilon(), max, background);
   }
 
   // Get Color Scheme

@@ -7,6 +7,7 @@ namespace ImPixel {
 struct ColorScheme {
   double valueMin{0};
   double valueMax{1};
+  ColorRGBA valueBackground{ColorRGBA::Transparent()};
 
   virtual ~ColorScheme() = default;
 
@@ -16,7 +17,7 @@ struct ColorScheme {
       return {red(norm_value), green(norm_value), blue(norm_value),
               normalizaAlpha(alpha)};
     };
-    return {0, 0, 0, 0};
+    return valueBackground;
   }
 
   inline const std::array<uint8_t, 3> &valueToRGB(double value) const {
